@@ -2,9 +2,6 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { Database } from '@/lib/database.types'
-
-type SubmissionInsert = Database['public']['Tables']['submissions']['Insert']
 
 const SECTORS = [
   'Spaza & Retail', 'Beauty & Personal Care', 'Food & Catering',
@@ -16,9 +13,15 @@ const SECTORS = [
 
 export default function SubmitPage() {
   const [form, setForm] = useState({
-    title: '', funder: '', amount_range: '', description: '',
-    eligibility: '', apply_url: '', official_source_url: '',
-    submitted_by_email: '', sector_tags: [] as string[]
+    title: '',
+    funder: '',
+    amount_range: '',
+    description: '',
+    eligibility: '',
+    apply_url: '',
+    official_source_url: '',
+    submitted_by_email: '',
+    sector_tags: [] as string[],
   })
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
@@ -32,7 +35,7 @@ export default function SubmitPage() {
       ...form,
       sector_tags: current.includes(sector)
         ? current.filter((s) => s !== sector)
-        : [...current, sector]
+        : [...current, sector],
     })
   }
 
@@ -40,21 +43,23 @@ export default function SubmitPage() {
     e.preventDefault()
     setStatus('submitting')
     const supabase = createClient()
-    const payload: SubmissionInsert = {
-      title: form.title,
-      funder: form.funder,
-      description: form.description,
-      amount_range: form.amount_range || null,
-      eligibility: form.eligibility || null,
-      apply_url: form.apply_url || null,
-      official_source_url: form.official_source_url || null,
-      submitted_by_email: form.submitted_by_email || null,
-      sector_tags: form.sector_tags,
-      status: 'pending',
-      reviewer_notes: null,
-      reviewed_at: null,
-    }
-    const { error } = await supabase.from('submissions').insert([payload])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
+      .from('submissions')
+      .insert([{
+        title: form.title,
+        funder: form.funder,
+        description: form.description,
+        amount_range: form.amount_range || null,
+        eligibility: form.eligibility || null,
+        apply_url: form.apply_url || null,
+        official_source_url: form.official_source_url || null,
+        submitted_by_email: form.submitted_by_email || null,
+        sector_tags: form.sector_tags,
+        status: 'pending',
+        reviewer_notes: null,
+        reviewed_at: null,
+      }])
     setStatus(error ? 'error' : 'success')
   }
 
@@ -127,9 +132,12 @@ export default function SubmitPage() {
 }
 
 function Field({ label, name, value, onChange, type = 'text', required = false }: {
-  label: string; name: string; value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string; required?: boolean
+  label: string
+  name: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  type?: string
+  required?: boolean
 }) {
   return (
     <div>
@@ -143,8 +151,10 @@ function Field({ label, name, value, onChange, type = 'text', required = false }
 }
 
 function TextareaField({ label, name, value, onChange, required = false }: {
-  label: string; name: string; value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  label: string
+  name: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   required?: boolean
 }) {
   return (
