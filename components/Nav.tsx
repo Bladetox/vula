@@ -3,13 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { VulaMark } from '@/components/VulaMark'
 
 const NAV_LINKS = [
-  { href: '/find', label: 'Find funding' },
-  { href: '/browse', label: 'Browse' },
+  { href: '/find',      label: 'Find funding' },
+  { href: '/browse',    label: 'Browse' },
   { href: '/directory', label: 'Directory' },
-  { href: '/register', label: 'Get registered' },
-  { href: '/submit', label: 'Submit a listing' }
+  { href: '/register',  label: 'Get registered' },
+  { href: '/submit',    label: 'Submit a listing' },
 ]
 
 export function Nav() {
@@ -25,7 +26,7 @@ export function Nav() {
         background: 'oklch(from #fdfcfa l c h / 0.92)',
         backdropFilter: 'blur(12px) saturate(180%)',
         WebkitBackdropFilter: 'blur(12px) saturate(180%)',
-        borderBottom: '1px solid var(--vula-border)'
+        borderBottom: '1px solid var(--vula-border)',
       }}
     >
       <nav
@@ -36,7 +37,7 @@ export function Nav() {
           height: '3.5rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
         }}
         aria-label="Main navigation"
       >
@@ -44,18 +45,21 @@ export function Nav() {
         <Link
           href="/"
           aria-label="Vula home"
-          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            textDecoration: 'none',
+            color: 'var(--vula-green)',
+          }}
         >
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-            <rect width="26" height="26" rx="7" fill="var(--vula-green)" />
-            <path d="M7 8l6 11 6-11" stroke="white" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <VulaMark size={26} />
           <span
             style={{
               fontWeight: 700,
               fontSize: '1rem',
               color: 'var(--vula-ink)',
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
             }}
           >
             Vula
@@ -77,7 +81,7 @@ export function Nav() {
                   borderRadius: 'var(--radius)',
                   textDecoration: 'none',
                   color: active ? 'var(--vula-green)' : 'var(--vula-muted)',
-                  background: active ? 'var(--vula-green-subtle)' : 'transparent'
+                  background: active ? 'var(--vula-green-subtle)' : 'transparent',
                 }}
               >
                 {link.label}
@@ -96,7 +100,7 @@ export function Nav() {
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            color: 'var(--vula-ink)'
+            color: 'var(--vula-ink)',
           }}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
@@ -118,7 +122,7 @@ export function Nav() {
           style={{
             borderTop: '1px solid var(--vula-border)',
             background: 'var(--vula-surface)',
-            padding: '0.75rem 1.25rem 1rem'
+            padding: '0.75rem 1.25rem 1rem',
           }}
         >
           {NAV_LINKS.map((link) => {
@@ -136,7 +140,7 @@ export function Nav() {
                   borderRadius: 'var(--radius-lg)',
                   textDecoration: 'none',
                   color: active ? 'var(--vula-green)' : 'var(--vula-ink)',
-                  background: active ? 'var(--vula-green-subtle)' : 'transparent'
+                  background: active ? 'var(--vula-green-subtle)' : 'transparent',
                 }}
               >
                 {link.label}
