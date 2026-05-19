@@ -6,7 +6,7 @@ import type { FundingOpportunity } from '@/lib/types'
 export default async function FindPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string; cooperative?: string }>
+  searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string; cooperative?: string; 'revenue-based'?: string }>
 }) {
   const params = await searchParams
   const supabase = await createClient()
@@ -50,6 +50,9 @@ export default async function FindPage({
 
   if (params.type === 'informal' || params.informal === 'true') {
     query = query.eq('requires_registration', false)
+  }
+  if (params.type === 'revenue-based') {
+    query = query.eq('funding_type', 'revenue-based')
   }
   if (params.youth === 'true') {
     query = query.eq('target_youth', true)
@@ -144,6 +147,12 @@ function renderPage(
           <FilterChip href="/find?women=true" label="Women-owned" active={params.women === 'true'} />
           <FilterChip href="/find?over35=true" label="35 and older" active={params.over35 === 'true'} />
           <FilterChip href="/find?cooperative=true" label="Co-operative" active={params.cooperative === 'true'} />
+          <FilterChip
+            href="/find?type=revenue-based"
+            label="Revenue-based"
+            active={params.type === 'revenue-based'}
+            amber
+          />
         </div>
 
         {opportunities.length === 0 ? (
@@ -176,7 +185,7 @@ function renderPage(
   )
 }
 
-function FilterChip({ href, label, active }: { href: string; label: string; active: boolean }) {
+function FilterChip({ href, label, active, amber }: { href: string; label: string; active: boolean; amber?: boolean }) {
   return (
     <Link
       href={href}
@@ -189,8 +198,12 @@ function FilterChip({ href, label, active }: { href: string; label: string; acti
         borderRadius: '999px',
         textDecoration: 'none',
         border: '1px solid',
-        borderColor: active ? 'var(--vula-green)' : 'var(--vula-border)',
-        background: active ? 'var(--vula-green)' : 'var(--vula-surface)',
+        borderColor: active
+          ? amber ? '#c2500a' : 'var(--vula-green)'
+          : 'var(--vula-border)',
+        background: active
+          ? amber ? '#c2500a' : 'var(--vula-green)'
+          : 'var(--vula-surface)',
         color: active ? '#fff' : 'var(--vula-ink)',
       }}
     >

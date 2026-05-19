@@ -557,7 +557,6 @@ export default function FaqPage() {
                               overflow: 'hidden',
                             }}
                           >
-                            {/* Card header */}
                             <div
                               style={{
                                 display: 'flex',
@@ -589,7 +588,6 @@ export default function FaqPage() {
                               </span>
                             </div>
 
-                            {/* Card body */}
                             <div style={{ padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
                               <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.65, margin: 0 }}>
                                 {item.definition}
