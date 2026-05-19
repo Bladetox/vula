@@ -1,13 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { FundingCard } from '@/components/FundingCard'
+import { type Industry, type FundingOpportunity } from '@/lib/types'
 import Link from 'next/link'
-
-const STATUS_LABELS: Record<string, string> = {
-  open: 'Open',
-  seasonal: 'Seasonal',
-  pilot: 'Pilot',
-  closed: 'Closed'
-}
 
 export default async function DirectoryPage({
   searchParams
@@ -31,8 +25,11 @@ export default async function DirectoryPage({
     query = query.eq('status', params.status)
   }
 
-  const { data: opportunities } = await query
-  const { data: industries } = await supabase.from('industries').select('slug, name').order('name')
+  const { data: oppsData } = await query
+  const { data: indsData } = await supabase.from('industries').select('slug, name').order('name')
+
+  const opportunities = (oppsData ?? []) as FundingOpportunity[]
+  const industries = (indsData ?? []) as Industry[]
 
   return (
     <div className="max-w-5xl mx-auto px-4 pt-10 pb-24">
@@ -53,7 +50,7 @@ export default async function DirectoryPage({
         >
           All
         </Link>
-        {(industries ?? []).map((ind) => (
+        {industries.map((ind) => (
           <Link
             key={ind.slug}
             href={`/directory?industry=${ind.slug}`}
@@ -69,7 +66,7 @@ export default async function DirectoryPage({
       </div>
 
       {/* Results */}
-      {!opportunities?.length ? (
+      {!opportunities.length ? (
         <div className="text-center py-16 text-[var(--vula-muted)]">
           No opportunities found for this filter.
         </div>
