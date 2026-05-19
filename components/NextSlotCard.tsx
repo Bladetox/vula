@@ -107,8 +107,7 @@ export default function NextSlotCard() {
           }}
         >
           We spent a lot of time putting Vula together so you would not have to search alone.
-          NextSlot was built with the same thinking — real data from your actual bookings,
-          finally something to show for all of it.
+          NextSlot was built with the same thinking.  You have been looking at the numbers. NextSlot tells you what the numbers mean and how to use them to grow. 
         </p>
 
         {/* CTA — hover handled via CSS in globals.css */}
