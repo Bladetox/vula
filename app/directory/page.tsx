@@ -15,19 +15,22 @@ export default async function DirectoryPage({
   // then fetch opportunity IDs from the join table.
   let opportunityIds: string[] | null = null
   if (params.industry) {
-    const { data: ind } = await supabase
+    const { data: indRaw } = await supabase
       .from('industries')
       .select('id')
       .eq('slug', params.industry)
       .single()
 
+    const ind = indRaw as { id: string } | null
+
     if (ind) {
-      const { data: joins } = await supabase
+      const { data: joinsRaw } = await supabase
         .from('opportunity_industries')
         .select('opportunity_id')
         .eq('industry_id', ind.id)
 
-      opportunityIds = (joins ?? []).map((j: { opportunity_id: string }) => j.opportunity_id)
+      const joins = (joinsRaw ?? []) as { opportunity_id: string }[]
+      opportunityIds = joins.map((j) => j.opportunity_id)
     } else {
       opportunityIds = [] // unknown industry slug — return nothing
     }
