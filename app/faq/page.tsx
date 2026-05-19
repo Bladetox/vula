@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Funding FAQ — Vula',
+  title: 'Funding FAQ - Vula',
   description:
     'Answers to the five questions South African entrepreneurs ask most about funding: qualifying, rejection, documents, grants vs loans, and timelines.',
 }
@@ -86,14 +86,14 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'Informal businesses — street traders, home-based operations, spaza shops, and sole traders without formal registration — can access programmes from government departments, community development organisations, and some banks. These programmes are specifically designed for people who cannot yet register because they lack the funds, the address, or the documentation to do so.',
+          'Informal businesses - street traders, home-based operations, spaza shops, and sole traders without formal registration - can access programmes from government departments, community development organisations, and some banks. These programmes are specifically designed for people who cannot yet register because they lack the funds, the address, or the documentation to do so.',
       },
       { type: 'heading', content: 'What informal businesses can access' },
       {
         type: 'list',
         items: [
-          'DSBD Asset Assist Programme — provides productive assets to informal traders, no CIPC required',
-          'Cooperative Incentive Scheme — open to registered cooperatives, which have a lower barrier than company registration',
+          'DSBD Asset Assist Programme - provides productive assets to informal traders, no CIPC required',
+          'Cooperative Incentive Scheme - open to registered cooperatives, which have a lower barrier than company registration',
           'Some provincial EDTECH and township enterprise funds that use proof of trading instead of CIPC',
           'Microfinance products from institutions like Small Enterprise Finance Agency (SEFA) that accept informal proof of business',
           'NGO and foundation funding (Columba Leadership, Tshikululu) that target pre-formal businesses',
@@ -115,7 +115,7 @@ const FAQS: Faq[] = [
     tagColor: { bg: '#f0edff', border: '#c9bfff', text: '#5b21b6' },
     question: 'Why do funding applications keep getting rejected?',
     short:
-      'Rejections almost always come down to the same five root causes. Understanding them before you apply — not after — is what changes the outcome.',
+      'Rejections almost always come down to the same five root causes. Understanding them before you apply - not after - is what changes the outcome.',
     answer: [
       {
         type: 'p',
@@ -134,12 +134,12 @@ const FAQS: Faq[] = [
           {
             number: '02',
             title: 'No financial records',
-            body: 'If you cannot show income and expenses — even in a simple spreadsheet — funders cannot assess your ability to repay or your need. A basic bookkeeping app like Wave (free) or Zoho Books changes this. The Finfind report found 75% of MSMEs have no accounting system at all.',
+            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A basic bookkeeping app like Wave (free) or Zoho Books changes this. The Finfind report found 75% of MSMEs have no accounting system at all.',
           },
           {
             number: '03',
             title: 'Poor or no credit profile',
-            body: 'For loan products, your personal credit score is often assessed alongside the business. Unpaid debt, judgements, and defaults flag you as high risk. Check your credit report on TransUnion or Experian before applying — both offer a free annual check.',
+            body: 'For loan products, your personal credit score is often assessed alongside the business. Unpaid debt, judgements, and defaults flag you as high risk. Check your credit report on TransUnion or Experian before applying - both offer a free annual check.',
           },
           {
             number: '04',
@@ -149,7 +149,7 @@ const FAQS: Faq[] = [
           {
             number: '05',
             title: 'Wrong product for your stage',
-            body: 'Applying for a R5m IDC growth loan when you are pre-revenue is not just a rejection — it puts a flag on your name. Match the product to your stage. Seed-stage businesses need seed-stage funding: grants, microfinance, and incubator support.',
+            body: 'Applying for a R5m IDC growth loan when you are pre-revenue is not just a rejection - it puts a flag on your name. Match the product to your stage. Seed-stage businesses need seed-stage funding: grants, microfinance, and incubator support.',
           },
         ],
       },
@@ -167,7 +167,7 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'Document requirements feel overwhelming because each funder lists them differently. But underneath the different labels, 90% of programmes ask for the same set of things. Here is the universal pack — the documents that appear on almost every checklist in South Africa.',
+          'Document requirements feel overwhelming because each funder lists them differently. But underneath the different labels, 90% of programmes ask for the same set of things. Here is the universal pack - the documents that appear on almost every checklist in South Africa.',
       },
       { type: 'heading', content: 'The core document pack' },
       {
@@ -189,10 +189,10 @@ const FAQS: Faq[] = [
       {
         type: 'list',
         items: [
-          'SEDA (Small Enterprise Development Agency) — free business plan templates and advisors nationwide',
-          'CIPC customer portal — registration certificates on demand',
-          'SARS eFiling — tax clearance in under 24 hours once compliant',
-          'Your bank — will provide confirmation letters and often statement bundles on request',
+          'SEDA (Small Enterprise Development Agency) - free business plan templates and advisors nationwide',
+          'CIPC customer portal - registration certificates on demand',
+          'SARS eFiling - tax clearance in under 24 hours once compliant',
+          'Your bank - will provide confirmation letters and often statement bundles on request',
         ],
       },
       { type: 'cta', label: 'See what documents each programme needs', href: '/directory' },
@@ -204,7 +204,7 @@ const FAQS: Faq[] = [
     tagColor: { bg: '#fef5e0', border: '#f0d89a', text: '#92600a' },
     question: 'What is the difference between a grant and a loan?',
     short:
-      'A grant is money you do not pay back. A loan is money you do. Knowing which one you need — and which you qualify for — determines which programmes are worth your time.',
+      'A grant is money you do not pay back. A loan is money you do. Knowing which one you need - and which you qualify for - determines which programmes are worth your time.',
     answer: [
       {
         type: 'p',
@@ -220,7 +220,7 @@ const FAQS: Faq[] = [
             color: { bg: 'var(--vula-green-subtle)', border: 'var(--vula-green-light)', accent: 'var(--vula-green)' },
             definition: 'Free money from government, a corporation, or a foundation. You do not repay it.',
             pros: ['No repayment, no interest', 'Does not dilute ownership', 'Can be used to prove viability for follow-on funding'],
-            cons: ['Highly competitive — often hundreds of applicants per slot', 'Usually tied to specific uses (equipment, training, not salaries)', 'Can require co-funding or matching contributions', 'Reporting and compliance obligations after award'],
+            cons: ['Highly competitive - often hundreds of applicants per slot', 'Usually tied to specific uses (equipment, training, not salaries)', 'Can require co-funding or matching contributions', 'Reporting and compliance obligations after award'],
             examples: 'BBSDP, TSIBA, IDC Black Industrialists Grant',
           },
           {
@@ -236,15 +236,15 @@ const FAQS: Faq[] = [
             color: { bg: '#fff5f5', border: '#ffc9c9', accent: '#c92a2a' },
             definition: 'An investor gives you capital in exchange for a share of your business.',
             pros: ['No repayment pressure', 'Investor often brings networks and mentorship', 'Right for high-growth businesses'],
-            cons: ['You give up a portion of ownership and future profit', 'Investors expect high returns — not suited to lifestyle businesses', 'Takes months to negotiate and close'],
+            cons: ['You give up a portion of ownership and future profit', 'Investors expect high returns - not suited to lifestyle businesses', 'Takes months to negotiate and close'],
             examples: 'IDC Equity, Sanlam ESD Programme, angel investors',
           },
           {
             type: 'Blended finance',
             color: { bg: '#fef9ec', border: '#f0d89a', accent: '#92650a' },
-            definition: 'A mix of grant and loan — part of the funding is a grant, part is a subsidised loan. Common in ESD and government-corporate partnerships.',
+            definition: 'A mix of grant and loan - part of the funding is a grant, part is a subsidised loan. Common in ESD and government-corporate partnerships.',
             pros: ['Lower effective cost than a pure loan', 'More flexible than a pure grant', 'Common in corporate ESD programmes'],
-            cons: ['Complex terms — read the grant/loan split carefully', 'Often restricted to suppliers within a specific corporate value chain'],
+            cons: ['Complex terms - read the grant/loan split carefully', 'Often restricted to suppliers within a specific corporate value chain'],
             examples: 'Sanlam ESD, Old Mutual Masisizane blended products',
           },
         ],
@@ -268,26 +268,26 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'One of the most under-communicated facts about funding is how long it takes. Applying without understanding the timeline can leave your business in limbo — waiting for a decision from an IDC committee while your rent is due next month. Here is a realistic picture.',
+          'One of the most under-communicated facts about funding is how long it takes. Applying without understanding the timeline can leave your business in limbo - waiting for a decision from an IDC committee while your rent is due next month. Here is a realistic picture.',
       },
       { type: 'heading', content: 'Typical timelines by funder type' },
       {
         type: 'timeline',
         items: [
-          { funder: 'Fintech / alternative lenders', example: 'Lula, Merchant Capital, Retail Capital', range: '24 hrs – 7 days', amount: 'R10k – R5m', note: 'Revenue-based, fast decisions, higher cost of capital' },
-          { funder: 'Commercial banks', example: 'Absa, Standard Bank, FNB, Nedbank', range: '1 – 6 weeks', amount: 'R50k – R50m', note: 'Requires full document pack, credit assessment, often collateral' },
-          { funder: 'SEFA microfinance', example: 'SEFA direct or intermediaries', range: '4 – 10 weeks', amount: 'R10k – R3m', note: 'Government DFI, more accessible but slower than banks' },
-          { funder: 'Corporate ESD / grants', example: 'Sanlam, Old Mutual, Massmart', range: '6 – 16 weeks', amount: 'R50k – R2m', note: 'Competitive intake rounds, often annual or bi-annual' },
-          { funder: 'Government grants (DSBD, BBSDP)', example: 'BBSDP, TSIBA, Seda support', range: '3 – 9 months', amount: 'R30k – R5m', note: 'Cost-sharing structure, extensive compliance, high competition' },
-          { funder: 'DFI growth capital', example: 'IDC, NEF, DBSA', range: '6 – 18 months', amount: 'R1m – R500m+', note: 'For established, revenue-generating businesses only' },
+          { funder: 'Fintech / alternative lenders', example: 'Lula, Merchant Capital, Retail Capital', range: '24 hrs - 7 days', amount: 'R10k - R5m', note: 'Revenue-based, fast decisions, higher cost of capital' },
+          { funder: 'Commercial banks', example: 'Absa, Standard Bank, FNB, Nedbank', range: '1 - 6 weeks', amount: 'R50k - R50m', note: 'Requires full document pack, credit assessment, often collateral' },
+          { funder: 'SEFA microfinance', example: 'SEFA direct or intermediaries', range: '4 - 10 weeks', amount: 'R10k - R3m', note: 'Government DFI, more accessible but slower than banks' },
+          { funder: 'Corporate ESD / grants', example: 'Sanlam, Old Mutual, Massmart', range: '6 - 16 weeks', amount: 'R50k - R2m', note: 'Competitive intake rounds, often annual or bi-annual' },
+          { funder: 'Government grants (DSBD, BBSDP)', example: 'BBSDP, TSIBA, Seda support', range: '3 - 9 months', amount: 'R30k - R5m', note: 'Cost-sharing structure, extensive compliance, high competition' },
+          { funder: 'DFI growth capital', example: 'IDC, NEF, DBSA', range: '6 - 18 months', amount: 'R1m - R500m+', note: 'For established, revenue-generating businesses only' },
         ],
       },
       { type: 'heading', content: 'Practical advice' },
       {
         type: 'list',
         items: [
-          'Apply to multiple programmes simultaneously — it is not cheating, it is standard practice',
-          'Never stop trading while waiting for a decision — use that time to improve your records',
+          'Apply to multiple programmes simultaneously - it is not cheating, it is standard practice',
+          'Never stop trading while waiting for a decision - use that time to improve your records',
           'If you need capital within 30 days, a DFI or government grant cannot help you in time',
           "Check each programme's current intake status before spending time on the application",
           'Rejection from one programme does not affect eligibility for another',
