@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
+type Industry = {
+  id: string
+  slug: string
+  name: string
+  description?: string | null
+}
+
 const INDUSTRY_ICONS: Record<string, string> = {
   'spaza-retail': 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z',
   'beauty-personal-care': 'M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z',
@@ -20,7 +27,8 @@ const INDUSTRY_ICONS: Record<string, string> = {
 
 export default async function BrowsePage() {
   const supabase = await createClient()
-  const { data: industries } = await supabase.from('industries').select('*').order('name')
+  const { data } = await supabase.from('industries').select('*').order('name')
+  const industries = (data ?? []) as Industry[]
 
   return (
     <div className="max-w-5xl mx-auto px-4 pt-10 pb-24">
@@ -29,7 +37,7 @@ export default async function BrowsePage() {
         <p className="text-[var(--vula-muted)]">Select your sector to see relevant funding opportunities.</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {(industries ?? []).map((ind) => (
+        {industries.map((ind) => (
           <Link
             key={ind.slug}
             href={`/directory?industry=${ind.slug}`}
