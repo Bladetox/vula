@@ -7,10 +7,6 @@ export const metadata: Metadata = {
     'Answers to the five questions South African entrepreneurs ask most about funding: qualifying, rejection, documents, grants vs loans, and timelines.',
 }
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 type PBlock     = { type: 'p';        content: string }
 type HeadBlock  = { type: 'heading';  content: string }
 type ListBlock  = { type: 'list';     items: string[] }
@@ -25,12 +21,11 @@ type DoclistBlock = {
 type TypesBlock = {
   type: 'types'
   items: {
-    type: string
-    color: { bg: string; border: string; accent: string }
+    label: string
+    pill: string
     definition: string
-    pros: string[]
-    cons: string[]
-    examples: string
+    realities: string[]
+    onVula: string
   }[]
 }
 type TimelineBlock = {
@@ -64,10 +59,6 @@ type Faq = {
   short: string
   answer: AnswerBlock[]
 }
-
-// ---------------------------------------------------------------------------
-// Data
-// ---------------------------------------------------------------------------
 
 const FAQS: Faq[] = [
   {
@@ -211,41 +202,61 @@ const FAQS: Faq[] = [
         content:
           'The confusion between grants, loans, and blended finance products causes people to waste months applying for the wrong thing. Here is how they differ in plain language.',
       },
-      { type: 'heading', content: 'Funding types explained' },
+      { type: 'heading', content: 'The four types you will encounter on Vula' },
       {
         type: 'types',
         items: [
           {
-            type: 'Grant',
-            color: { bg: 'var(--vula-green-subtle)', border: 'var(--vula-green-light)', accent: 'var(--vula-green)' },
-            definition: 'Free money from government, a corporation, or a foundation. You do not repay it.',
-            pros: ['No repayment, no interest', 'Does not dilute ownership', 'Can be used to prove viability for follow-on funding'],
-            cons: ['Highly competitive - often hundreds of applicants per slot', 'Usually tied to specific uses (equipment, training, not salaries)', 'Can require co-funding or matching contributions', 'Reporting and compliance obligations after award'],
-            examples: 'BBSDP, TSIBA, IDC Black Industrialists Grant',
+            label: 'Grant',
+            pill: 'No repayment',
+            definition:
+              'Money from government, a development agency, or a corporate ESD programme. You keep it. No interest, no monthly instalments.',
+            realities: [
+              'The most competitive type - often hundreds of applicants per slot',
+              'Usually tied to a specific use: equipment, training, or market access - not salaries or rent',
+              'Comes with reporting obligations. Funders will check you spent it correctly',
+              'A grant award on your record makes follow-on loans easier to get',
+            ],
+            onVula: 'BBSDP, IDC Black Industrialists Grant, SEDA Product Testing Grant',
           },
           {
-            type: 'Loan',
-            color: { bg: '#f0edff', border: '#c9bfff', accent: '#5b21b6' },
-            definition: 'Borrowed money from a bank, DFI, or microfinance institution. Repaid over time with interest.',
-            pros: ['Larger amounts available than most grants', 'No ownership dilution', 'Builds a credit track record for future financing'],
-            cons: ['Monthly repayments required regardless of revenue', 'Requires collateral or surety in most cases', 'Credit score and trading history are assessed'],
-            examples: 'Absa SME Loan, SEFA Loan, Old Mutual Masisizane',
+            label: 'Loan',
+            pill: 'Repaid over time',
+            definition:
+              'Borrowed capital from a bank, a development finance institution (DFI), or a microfinance provider. You repay it monthly with interest.',
+            realities: [
+              'Larger amounts are available than most grant programmes',
+              'Your credit history and trading record are the main assessment criteria',
+              'Collateral is often required - though DFIs like SEFA and NEF are more flexible than commercial banks',
+              'If your business can service the debt, a loan is often faster and more predictable than chasing grants',
+            ],
+            onVula: 'SEFA Direct Lending, Absa SME Loan, Old Mutual Masisizane',
           },
           {
-            type: 'Equity',
-            color: { bg: '#fff5f5', border: '#ffc9c9', accent: '#c92a2a' },
-            definition: 'An investor gives you capital in exchange for a share of your business.',
-            pros: ['No repayment pressure', 'Investor often brings networks and mentorship', 'Right for high-growth businesses'],
-            cons: ['You give up a portion of ownership and future profit', 'Investors expect high returns - not suited to lifestyle businesses', 'Takes months to negotiate and close'],
-            examples: 'IDC Equity, Sanlam ESD Programme, angel investors',
+            label: 'Equity',
+            pill: 'Ownership in exchange',
+            definition:
+              'An investor provides capital and takes a share of your business in return. There is no repayment - but there is a cost: a portion of future profit and decision-making.',
+            realities: [
+              'No monthly repayment pressure - right for high-growth businesses that need runway',
+              'Investors expect a return through growth or an eventual exit, not suited to stable lifestyle businesses',
+              'Negotiation takes months - build in lead time',
+              'Most relevant to tech, manufacturing, and scale-ready businesses',
+            ],
+            onVula: 'IDC Equity, National Empowerment Fund (NEF), Sanlam ESD Programme',
           },
           {
-            type: 'Blended finance',
-            color: { bg: '#fef9ec', border: '#f0d89a', accent: '#92650a' },
-            definition: 'A mix of grant and loan - part of the funding is a grant, part is a subsidised loan. Common in ESD and government-corporate partnerships.',
-            pros: ['Lower effective cost than a pure loan', 'More flexible than a pure grant', 'Common in corporate ESD programmes'],
-            cons: ['Complex terms - read the grant/loan split carefully', 'Often restricted to suppliers within a specific corporate value chain'],
-            examples: 'Sanlam ESD, Old Mutual Masisizane blended products',
+            label: 'Blended finance',
+            pill: 'Part grant, part loan',
+            definition:
+              'A hybrid product where part of the funding is a grant and the rest is a subsidised loan. Common in corporate ESD and government-partnership programmes.',
+            realities: [
+              'Lower effective cost than a pure market-rate loan',
+              'More flexible than a pure grant since the loan portion can cover working capital',
+              'Often restricted to businesses within a specific corporate supply chain or sector',
+              'Read the split carefully - the grant and loan portions have different conditions',
+            ],
+            onVula: 'Sanlam ESD, Old Mutual Masisizane blended products',
           },
         ],
       },
@@ -297,10 +308,6 @@ const FAQS: Faq[] = [
     ],
   },
 ]
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
 
 export default function FaqPage() {
   return (
@@ -523,36 +530,102 @@ export default function FaqPage() {
 
                 if (block.type === 'types') {
                   return (
-                    <div key={bi} style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+                    <div key={bi} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                       {block.items.map((item, ii) => (
-                        <div key={ii} style={{ background: item.color.bg, border: `1px solid ${item.color.border}`, borderRadius: 'var(--radius-lg)', padding: '1.125rem 1.25rem' }}>
-                          <p style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--vula-ink)', marginBottom: '0.375rem' }}>{item.type}</p>
-                          <p style={{ fontSize: '0.875rem', color: 'var(--vula-muted)', lineHeight: 1.6, marginBottom: '0.75rem' }}>{item.definition}</p>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem 1.5rem', marginBottom: '0.75rem' }}>
-                            <div>
-                              <p style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: item.color.accent, marginBottom: '0.375rem' }}>Works well when</p>
-                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                                {item.pros.map((p, pi) => (
-                                  <li key={pi} style={{ fontSize: '0.8125rem', color: 'var(--vula-muted)', display: 'flex', gap: '0.375rem', lineHeight: 1.5 }}>
-                                    <span style={{ color: item.color.accent, flexShrink: 0 }}>+</span>{p}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                            <div>
-                              <p style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--vula-faint)', marginBottom: '0.375rem' }}>Watch out for</p>
-                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                                {item.cons.map((c, ci) => (
-                                  <li key={ci} style={{ fontSize: '0.8125rem', color: 'var(--vula-muted)', display: 'flex', gap: '0.375rem', lineHeight: 1.5 }}>
-                                    <span style={{ color: 'var(--vula-faint)', flexShrink: 0 }}>-</span>{c}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                        <div
+                          key={ii}
+                          style={{
+                            background: 'var(--vula-surface)',
+                            border: '1px solid var(--vula-border)',
+                            borderRadius: 'var(--radius-xl)',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          {/* Card header */}
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: '0.75rem',
+                              padding: '1rem 1.25rem',
+                              borderBottom: '1px solid var(--vula-border)',
+                              background: 'var(--vula-surface-2)',
+                            }}
+                          >
+                            <p style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--vula-ink)', margin: 0 }}>
+                              {item.label}
+                            </p>
+                            <span
+                              style={{
+                                flexShrink: 0,
+                                fontSize: '0.6875rem',
+                                fontWeight: 600,
+                                letterSpacing: '0.03em',
+                                padding: '0.2rem 0.625rem',
+                                borderRadius: '999px',
+                                background: 'var(--vula-green-subtle)',
+                                border: '1px solid var(--vula-green-light)',
+                                color: 'var(--vula-green)',
+                              }}
+                            >
+                              {item.pill}
+                            </span>
                           </div>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--vula-faint)' }}>
-                            <span style={{ fontWeight: 600 }}>Examples on Vula: </span>{item.examples}
-                          </p>
+
+                          {/* Card body */}
+                          <div style={{ padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+                            <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.65, margin: 0 }}>
+                              {item.definition}
+                            </p>
+
+                            <div>
+                              <p
+                                style={{
+                                  fontSize: '0.6875rem',
+                                  fontWeight: 700,
+                                  letterSpacing: '0.06em',
+                                  textTransform: 'uppercase',
+                                  color: 'var(--vula-faint)',
+                                  marginBottom: '0.5rem',
+                                }}
+                              >
+                                What to know
+                              </p>
+                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                {item.realities.map((r, ri) => (
+                                  <li
+                                    key={ri}
+                                    style={{
+                                      display: 'flex',
+                                      gap: '0.5rem',
+                                      fontSize: '0.8125rem',
+                                      color: 'var(--vula-muted)',
+                                      lineHeight: 1.55,
+                                    }}
+                                  >
+                                    <svg width="13" height="13" fill="none" viewBox="0 0 14 14" aria-hidden="true" style={{ flexShrink: 0, marginTop: '0.2rem' }}>
+                                      <path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="var(--vula-green)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    {r}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <p
+                              style={{
+                                fontSize: '0.75rem',
+                                color: 'var(--vula-faint)',
+                                borderTop: '1px solid var(--vula-border)',
+                                paddingTop: '0.75rem',
+                                margin: 0,
+                              }}
+                            >
+                              <span style={{ fontWeight: 600 }}>On Vula: </span>
+                              {item.onVula}
+                            </p>
+                          </div>
                         </div>
                       ))}
                     </div>
