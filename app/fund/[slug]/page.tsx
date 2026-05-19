@@ -5,7 +5,6 @@ import type { Metadata } from 'next'
 import type { FundingOpportunity } from '@/lib/types'
 import NextSlotCard from '@/components/NextSlotCard'
 
-// The dynamic segment is the opportunity UUID (id), not a slug.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug: id } = await params
   const supabase = await createClient()
@@ -44,10 +43,10 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
 
   const status = STATUS_CONFIG[opp.status] ?? STATUS_CONFIG['open']
 
-  // Determine the primary CTA URL: prefer apply_url, fall back to source_url
-  const primaryUrl = opp.apply_url || opp.source_url
-  // Show secondary source link only when it differs from the primary
-  const showSecondary = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
+  // apply_url = null means no self-service portal exists — show contact block instead
+  const hasApplyUrl = !!opp.apply_url
+  // Show a secondary "view source" link only when source differs from apply
+  const showSourceLink = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
 
   return (
     <main>
@@ -275,59 +274,166 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
               {!opp.requires_registration && <Badge label="Informal eligible" color="gold" />}
             </div>
 
-            {/* CTAs */}
+            {/* CTAs — two variants: direct apply URL vs. no portal (contact required) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-              {primaryUrl && (
-                <a
-                  href={primaryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {hasApplyUrl ? (
+                <>
+                  <a
+                    href={opp.apply_url!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      background: 'var(--vula-green)',
+                      color: '#fff',
+                      fontWeight: 650,
+                      fontSize: '0.9375rem',
+                      padding: '0.875rem 1.5rem',
+                      borderRadius: 'var(--radius-lg)',
+                      textDecoration: 'none',
+                      boxShadow: '0 1px 2px oklch(0.2 0.08 145 / 0.18), inset 0 1px 0 oklch(1 0 0 / 0.12)',
+                    }}
+                  >
+                    Apply on official site
+                    <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
+                  {showSourceLink && (
+                    <a
+                      href={opp.source_url!}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        background: 'var(--vula-surface)',
+                        border: '1px solid var(--vula-border)',
+                        color: 'var(--vula-muted)',
+                        fontWeight: 500,
+                        fontSize: '0.875rem',
+                        padding: '0.75rem 1.5rem',
+                        borderRadius: 'var(--radius-lg)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      View official source
+                      <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                        <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  )}
+                </>
+              ) : (
+                /* No self-service portal — applications go through DSBD/SEFA offices */
+                <div
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    background: 'var(--vula-green)',
-                    color: '#fff',
-                    fontWeight: 650,
-                    fontSize: '0.9375rem',
-                    padding: '0.875rem 1.5rem',
-                    borderRadius: 'var(--radius-lg)',
-                    textDecoration: 'none',
-                    boxShadow: '0 1px 2px oklch(0.2 0.08 145 / 0.18), inset 0 1px 0 oklch(1 0 0 / 0.12)',
-                  }}
-                >
-                  Apply on official site
-                  <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
-                    <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
-              )}
-              {showSecondary && (
-                <a
-                  href={opp.source_url!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    background: 'var(--vula-surface)',
+                    background: 'var(--vula-bg)',
                     border: '1px solid var(--vula-border)',
-                    color: 'var(--vula-muted)',
-                    fontWeight: 500,
-                    fontSize: '0.875rem',
-                    padding: '0.75rem 1.5rem',
                     borderRadius: 'var(--radius-lg)',
-                    textDecoration: 'none',
+                    padding: '1.25rem 1.375rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.875rem',
                   }}
                 >
-                  View official source
-                  <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
-                    <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                    <div
+                      style={{
+                        flexShrink: 0,
+                        width: '2rem',
+                        height: '2rem',
+                        borderRadius: 'var(--radius)',
+                        background: 'var(--vula-green-subtle)',
+                        border: '1px solid var(--vula-green-light)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--vula-green)',
+                      }}
+                    >
+                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p
+                        style={{
+                          fontSize: '0.875rem',
+                          fontWeight: 600,
+                          color: 'var(--vula-ink)',
+                          marginBottom: '0.25rem',
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        No online portal
+                      </p>
+                      <p
+                        style={{
+                          fontSize: '0.8125rem',
+                          color: 'var(--vula-muted)',
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        This programme is applied for in person at a SEFA or DSBD office. Call the DSBD helpline or visit your nearest SEFA branch to start your application.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <a
+                      href="tel:0860103703"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.375rem',
+                        fontSize: '0.8125rem',
+                        fontWeight: 600,
+                        color: 'var(--vula-green)',
+                        background: 'var(--vula-green-subtle)',
+                        border: '1px solid var(--vula-green-light)',
+                        padding: '0.5rem 1rem',
+                        borderRadius: 'var(--radius)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      0860 103 703
+                    </a>
+                    {opp.source_url && (
+                      <a
+                        href={opp.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.375rem',
+                          fontSize: '0.8125rem',
+                          fontWeight: 500,
+                          color: 'var(--vula-muted)',
+                          background: 'var(--vula-surface-2)',
+                          border: '1px solid var(--vula-border)',
+                          padding: '0.5rem 1rem',
+                          borderRadius: 'var(--radius)',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        More info
+                        <svg width="11" height="11" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                          <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
 
