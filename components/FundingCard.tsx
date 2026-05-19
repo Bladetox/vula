@@ -10,8 +10,21 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }
   closed:   { label: 'Closed',   bg: '#f3f3f2',                   color: 'var(--vula-faint)' }
 }
 
+// Human-readable labels for funding_type values
+const FUNDING_TYPE_LABEL: Record<string, string> = {
+  grant:          'Grant',
+  loan:           'Loan',
+  blended:        'Blended finance',
+  equity:         'Equity',
+  guarantee:      'Guarantee',
+  'revenue-based':'Revenue-based',
+  other:          'Other',
+}
+
 export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportunity }) {
   const status = STATUS_CONFIG[opp.status] ?? STATUS_CONFIG['open']
+  const typeLabel = opp.funding_type ? FUNDING_TYPE_LABEL[opp.funding_type] ?? opp.funding_type : null
+  const isRevenueBased = opp.funding_type === 'revenue-based'
 
   return (
     <Link
@@ -112,17 +125,18 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
         {opp.target_over35      && <Tag label="35+" />}
         {opp.target_cooperative && <Tag label="Co-op" />}
         {!opp.requires_registration && <Tag label="Informal eligible" color="gold" />}
-        {opp.funding_type       && <Tag label={opp.funding_type} />}
+        {typeLabel && <Tag label={typeLabel} color={isRevenueBased ? 'amber' : 'green'} />}
         {opp.deadline && <DeadlineCountdown deadline={opp.deadline} />}
       </div>
     </Link>
   )
 }
 
-function Tag({ label, color = 'green' }: { label: string; color?: 'green' | 'gold' }) {
+function Tag({ label, color = 'green' }: { label: string; color?: 'green' | 'gold' | 'amber' }) {
   const styles = {
-    green: { bg: 'var(--vula-green-subtle)', color: 'var(--vula-green)', border: 'var(--vula-green-light)' },
-    gold:  { bg: 'var(--vula-gold-light)',   color: 'var(--vula-gold)',   border: '#f0d89a' }
+    green: { bg: 'var(--vula-green-subtle)', color: 'var(--vula-green)',  border: 'var(--vula-green-light)' },
+    gold:  { bg: 'var(--vula-gold-light)',   color: 'var(--vula-gold)',   border: '#f0d89a' },
+    amber: { bg: '#fff7ed',                  color: '#c2500a',            border: '#fed7aa' },
   }
   return (
     <span

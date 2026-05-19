@@ -3,10 +3,18 @@ import { FundingCard } from '@/components/FundingCard'
 import { type Industry, type FundingOpportunity } from '@/lib/types'
 import Link from 'next/link'
 
+const FUNDING_TYPE_FILTERS = [
+  { value: 'grant',          label: 'Grants' },
+  { value: 'loan',           label: 'Loans' },
+  { value: 'revenue-based',  label: 'Revenue-based' },
+  { value: 'equity',         label: 'Equity' },
+  { value: 'blended',        label: 'Blended finance' },
+]
+
 export default async function DirectoryPage({
   searchParams,
 }: {
-  searchParams: Promise<{ industry?: string; status?: string }>
+  searchParams: Promise<{ industry?: string; status?: string; type?: string }>
 }) {
   const params = await searchParams
   const supabase = await createClient()
@@ -54,6 +62,10 @@ export default async function DirectoryPage({
     query = query.eq('status', params.status)
   }
 
+  if (params.type) {
+    query = query.eq('funding_type', params.type)
+  }
+
   const { data: oppsData } = await query
   const { data: indsData } = await supabase.from('industries').select('slug, name').order('name')
 
@@ -64,11 +76,17 @@ export default async function DirectoryPage({
 }
 
 function renderPage(
-  params: { industry?: string; status?: string },
+  params: { industry?: string; status?: string; type?: string },
   opportunities: FundingOpportunity[],
   industries: Industry[]
 ) {
-  const noFilter = !params.industry && !params.status
+  const noFilter = !params.industry && !params.status && !params.type
+
+  // Build base URL preserving industry param when switching type filter
+  function typeHref(value?: string) {
+    const base = params.industry ? `/directory?industry=${params.industry}` : '/directory'
+    return value ? `${base}${params.industry ? '&' : '?'}type=${value}` : base
+  }
 
   return (
     <main>
@@ -122,21 +140,47 @@ function renderPage(
           padding: 'clamp(1.5rem, 3vw, 2.5rem) 1.25rem clamp(4rem, 8vw, 6rem)',
         }}
       >
+        {/* Funding type filter */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.5rem',
+            marginBottom: '0.875rem',
+          }}
+          role="group"
+          aria-label="Filter by funding type"
+        >
+          <FilterChip href={typeHref()} label="All types" active={!params.type} />
+          {FUNDING_TYPE_FILTERS.map((f) => (
+            <FilterChip
+              key={f.value}
+              href={typeHref(f.value)}
+              label={f.label}
+              active={params.type === f.value}
+              amber={f.value === 'revenue-based'}
+            />
+          ))}
+        </div>
+
+        {/* Industry filter */}
         <div
           style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: '0.5rem',
             marginBottom: '1.75rem',
+            paddingTop: '0.625rem',
+            borderTop: '1px solid var(--vula-border)',
           }}
           role="group"
           aria-label="Filter by industry"
         >
-          <FilterChip href="/directory" label="All" active={noFilter} />
+          <FilterChip href={params.type ? `/directory?type=${params.type}` : '/directory'} label="All industries" active={!params.industry} />
           {industries.map((ind) => (
             <FilterChip
               key={ind.slug}
-              href={`/directory?industry=${ind.slug}`}
+              href={`/directory?industry=${ind.slug}${params.type ? `&type=${params.type}` : ''}`}
               label={ind.name}
               active={params.industry === ind.slug}
             />
@@ -158,7 +202,7 @@ function renderPage(
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p style={{ fontWeight: 600, color: 'var(--vula-ink)', marginBottom: '0.375rem' }}>No opportunities found</p>
-            <p style={{ fontSize: '0.875rem' }}>Try a different industry filter.</p>
+            <p style={{ fontSize: '0.875rem' }}>Try a different filter combination.</p>
           </div>
         ) : (
           <div
@@ -178,7 +222,7 @@ function renderPage(
   )
 }
 
-function FilterChip({ href, label, active }: { href: string; label: string; active: boolean }) {
+function FilterChip({ href, label, active, amber }: { href: string; label: string; active: boolean; amber?: boolean }) {
   return (
     <Link
       href={href}
@@ -191,8 +235,12 @@ function FilterChip({ href, label, active }: { href: string; label: string; acti
         borderRadius: '999px',
         textDecoration: 'none',
         border: '1px solid',
-        borderColor: active ? 'var(--vula-green)' : 'var(--vula-border)',
-        background: active ? 'var(--vula-green)' : 'var(--vula-surface)',
+        borderColor: active
+          ? amber ? '#c2500a' : 'var(--vula-green)'
+          : 'var(--vula-border)',
+        background: active
+          ? amber ? '#c2500a' : 'var(--vula-green)'
+          : 'var(--vula-surface)',
         color: active ? '#fff' : 'var(--vula-ink)',
       }}
     >

@@ -195,14 +195,14 @@ const FAQS: Faq[] = [
     tagColor: { bg: '#fef5e0', border: '#f0d89a', text: '#92600a' },
     question: 'What is the difference between a grant and a loan?',
     short:
-      'A grant is money you do not pay back. A loan is money you do. Knowing which one you need - and which you qualify for - determines which programmes are worth your time.',
+      'A grant is money you do not pay back. A loan is money you do. Revenue-based finance sits in between - repayment is automatic and tied to your daily sales. Knowing which one fits your situation determines which programmes are worth your time.',
     answer: [
       {
         type: 'p',
         content:
-          'The confusion between grants, loans, and blended finance products causes people to waste months applying for the wrong thing. Here is how they differ in plain language.',
+          'The confusion between grants, loans, and newer fintech products causes people to waste months applying for the wrong thing. Here is how the five types you will encounter on Vula differ in plain language.',
       },
-      { type: 'heading', content: 'The four types you will encounter on Vula' },
+      { type: 'heading', content: 'The five types you will encounter on Vula' },
       {
         type: 'types',
         items: [
@@ -231,6 +231,19 @@ const FAQS: Faq[] = [
               'If your business can service the debt, a loan is often faster and more predictable than chasing grants',
             ],
             onVula: 'SEFA Direct Lending, Absa SME Loan, Old Mutual Masisizane',
+          },
+          {
+            label: 'Revenue-based finance',
+            pill: 'Repaid from daily sales',
+            definition:
+              'A fintech advance repaid as a percentage of your daily card or bank turnover. No fixed monthly instalment - you pay back more when trading is strong, less when it is slow.',
+            realities: [
+              'The fastest to access - decisions in 24 to 48 hours, no business plan required',
+              'Qualification is based on your actual card or bank transaction history, not credit score alone',
+              'Only available to businesses already processing payments - Yoco merchants, card machine users, online sellers',
+              'Factor fees (not interest rates) make the cost harder to compare - calculate the total repayment amount, not the percentage',
+            ],
+            onVula: 'Yoco Capital, Lula, Merchant Capital, Retail Capital, Peach Payments Capital',
           },
           {
             label: 'Equity',
@@ -263,7 +276,7 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'A common mistake is to chase grants because repayment feels scary. But grants are the hardest to get. If your business is trading and can service debt, a loan may be faster, more predictable, and ultimately more useful. Use grants to fund fixed costs and capacity building; use loans to fund working capital and growth.',
+          'A common mistake is to chase grants because repayment feels scary. But grants are the hardest to get. If your business is trading and can service debt, a loan or revenue-based advance may be faster, more predictable, and ultimately more useful. Use grants to fund fixed costs and capacity building; use loans and advances to fund working capital and growth.',
       },
       { type: 'cta', label: 'Browse by funding type', href: '/directory' },
     ],
@@ -285,7 +298,8 @@ const FAQS: Faq[] = [
       {
         type: 'timeline',
         items: [
-          { funder: 'Fintech / alternative lenders', example: 'Lula, Merchant Capital, Retail Capital', range: '24 hrs - 7 days', amount: 'R10k - R5m', note: 'Revenue-based, fast decisions, higher cost of capital' },
+          { funder: 'Revenue-based (Yoco, Lula, Merchant Capital)', example: 'Yoco Capital, Lula, Peach Payments Capital', range: '24 hrs - 3 days', amount: 'R5k - R5m', note: 'Turnover-linked, automated decisions, factor fee pricing - fastest capital available' },
+          { funder: 'Fintech / alternative lenders', example: 'Retail Capital, other alt lenders', range: '24 hrs - 7 days', amount: 'R10k - R5m', note: 'Revenue-based, fast decisions, higher cost of capital' },
           { funder: 'Commercial banks', example: 'Absa, Standard Bank, FNB, Nedbank', range: '1 - 6 weeks', amount: 'R50k - R50m', note: 'Requires full document pack, credit assessment, often collateral' },
           { funder: 'SEFA microfinance', example: 'SEFA direct or intermediaries', range: '4 - 10 weeks', amount: 'R10k - R3m', note: 'Government DFI, more accessible but slower than banks' },
           { funder: 'Corporate ESD / grants', example: 'Sanlam, Old Mutual, Massmart', range: '6 - 16 weeks', amount: 'R50k - R2m', note: 'Competitive intake rounds, often annual or bi-annual' },
@@ -531,103 +545,106 @@ export default function FaqPage() {
                 if (block.type === 'types') {
                   return (
                     <div key={bi} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                      {block.items.map((item, ii) => (
-                        <div
-                          key={ii}
-                          style={{
-                            background: 'var(--vula-surface)',
-                            border: '1px solid var(--vula-border)',
-                            borderRadius: 'var(--radius-xl)',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          {/* Card header */}
+                      {block.items.map((item, ii) => {
+                        const isRevenueBased = item.label === 'Revenue-based finance'
+                        return (
                           <div
+                            key={ii}
                             style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              gap: '0.75rem',
-                              padding: '1rem 1.25rem',
-                              borderBottom: '1px solid var(--vula-border)',
-                              background: 'var(--vula-surface-2)',
+                              background: 'var(--vula-surface)',
+                              border: `1px solid ${isRevenueBased ? '#fed7aa' : 'var(--vula-border)'}`,
+                              borderRadius: 'var(--radius-xl)',
+                              overflow: 'hidden',
                             }}
                           >
-                            <p style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--vula-ink)', margin: 0 }}>
-                              {item.label}
-                            </p>
-                            <span
+                            {/* Card header */}
+                            <div
                               style={{
-                                flexShrink: 0,
-                                fontSize: '0.6875rem',
-                                fontWeight: 600,
-                                letterSpacing: '0.03em',
-                                padding: '0.2rem 0.625rem',
-                                borderRadius: '999px',
-                                background: 'var(--vula-green-subtle)',
-                                border: '1px solid var(--vula-green-light)',
-                                color: 'var(--vula-green)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '0.75rem',
+                                padding: '1rem 1.25rem',
+                                borderBottom: `1px solid ${isRevenueBased ? '#fed7aa' : 'var(--vula-border)'}`,
+                                background: isRevenueBased ? '#fff7ed' : 'var(--vula-surface-2)',
                               }}
                             >
-                              {item.pill}
-                            </span>
-                          </div>
-
-                          {/* Card body */}
-                          <div style={{ padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.65, margin: 0 }}>
-                              {item.definition}
-                            </p>
-
-                            <div>
-                              <p
+                              <p style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--vula-ink)', margin: 0 }}>
+                                {item.label}
+                              </p>
+                              <span
                                 style={{
+                                  flexShrink: 0,
                                   fontSize: '0.6875rem',
-                                  fontWeight: 700,
-                                  letterSpacing: '0.06em',
-                                  textTransform: 'uppercase',
-                                  color: 'var(--vula-faint)',
-                                  marginBottom: '0.5rem',
+                                  fontWeight: 600,
+                                  letterSpacing: '0.03em',
+                                  padding: '0.2rem 0.625rem',
+                                  borderRadius: '999px',
+                                  background: isRevenueBased ? '#fff7ed' : 'var(--vula-green-subtle)',
+                                  border: `1px solid ${isRevenueBased ? '#fed7aa' : 'var(--vula-green-light)'}`,
+                                  color: isRevenueBased ? '#c2500a' : 'var(--vula-green)',
                                 }}
                               >
-                                What to know
-                              </p>
-                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                                {item.realities.map((r, ri) => (
-                                  <li
-                                    key={ri}
-                                    style={{
-                                      display: 'flex',
-                                      gap: '0.5rem',
-                                      fontSize: '0.8125rem',
-                                      color: 'var(--vula-muted)',
-                                      lineHeight: 1.55,
-                                    }}
-                                  >
-                                    <svg width="13" height="13" fill="none" viewBox="0 0 14 14" aria-hidden="true" style={{ flexShrink: 0, marginTop: '0.2rem' }}>
-                                      <path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="var(--vula-green)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                    {r}
-                                  </li>
-                                ))}
-                              </ul>
+                                {item.pill}
+                              </span>
                             </div>
 
-                            <p
-                              style={{
-                                fontSize: '0.75rem',
-                                color: 'var(--vula-faint)',
-                                borderTop: '1px solid var(--vula-border)',
-                                paddingTop: '0.75rem',
-                                margin: 0,
-                              }}
-                            >
-                              <span style={{ fontWeight: 600 }}>On Vula: </span>
-                              {item.onVula}
-                            </p>
+                            {/* Card body */}
+                            <div style={{ padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+                              <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.65, margin: 0 }}>
+                                {item.definition}
+                              </p>
+
+                              <div>
+                                <p
+                                  style={{
+                                    fontSize: '0.6875rem',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.06em',
+                                    textTransform: 'uppercase',
+                                    color: 'var(--vula-faint)',
+                                    marginBottom: '0.5rem',
+                                  }}
+                                >
+                                  What to know
+                                </p>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                  {item.realities.map((r, ri) => (
+                                    <li
+                                      key={ri}
+                                      style={{
+                                        display: 'flex',
+                                        gap: '0.5rem',
+                                        fontSize: '0.8125rem',
+                                        color: 'var(--vula-muted)',
+                                        lineHeight: 1.55,
+                                      }}
+                                    >
+                                      <svg width="13" height="13" fill="none" viewBox="0 0 14 14" aria-hidden="true" style={{ flexShrink: 0, marginTop: '0.2rem' }}>
+                                        <path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="var(--vula-green)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                                      </svg>
+                                      {r}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <p
+                                style={{
+                                  fontSize: '0.75rem',
+                                  color: 'var(--vula-faint)',
+                                  borderTop: '1px solid var(--vula-border)',
+                                  paddingTop: '0.75rem',
+                                  margin: 0,
+                                }}
+                              >
+                                <span style={{ fontWeight: 600 }}>On Vula: </span>
+                                {item.onVula}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
                   )
                 }
