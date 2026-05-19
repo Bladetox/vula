@@ -66,9 +66,15 @@ export interface Database {
           created_at: string
           reviewed_at: string | null
         }
-        Insert: Omit<Database['public']['Tables']['submissions']['Row'], 'id' | 'created_at'> & {
+        Insert: Omit<
+          Database['public']['Tables']['submissions']['Row'],
+          'id' | 'created_at' | 'status' | 'reviewer_notes' | 'reviewed_at'
+        > & {
           id?: string
           created_at?: string
+          status?: string
+          reviewer_notes?: string | null
+          reviewed_at?: string | null
         }
         Update: Partial<Database['public']['Tables']['submissions']['Insert']>
       }
