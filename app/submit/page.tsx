@@ -52,6 +52,7 @@ export default function SubmitPage() {
       sector_tags: form.sector_tags,
       status: 'pending',
       reviewer_notes: null,
+      reviewed_at: null,
     }
     const { error } = await supabase.from('submissions').insert([payload])
     setStatus(error ? 'error' : 'success')
