@@ -6,7 +6,7 @@ import type { FundingOpportunity } from '@/lib/types'
 export default async function FindPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; informal?: string }>
+  searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string }>
 }) {
   const params = await searchParams
   const supabase = await createClient()
@@ -57,6 +57,9 @@ export default async function FindPage({
   if (params.women === 'true') {
     query = query.eq('target_women', true)
   }
+  if (params.over35 === 'true') {
+    query = query.eq('target_over35', true)
+  }
 
   const { data } = await query
   const opportunities = (data ?? []) as FundingOpportunity[]
@@ -65,10 +68,10 @@ export default async function FindPage({
 }
 
 function renderPage(
-  params: { type?: string; industry?: string; youth?: string; women?: string; informal?: string },
+  params: { type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string },
   opportunities: FundingOpportunity[]
 ) {
-  const noFilter = !params.type && !params.informal && !params.youth && !params.women
+  const noFilter = !params.type && !params.informal && !params.youth && !params.women && !params.over35
 
   return (
     <main>
@@ -139,6 +142,7 @@ function renderPage(
           <FilterChip href="/find?type=informal" label="No registration needed" active={params.type === 'informal'} />
           <FilterChip href="/find?youth=true" label="Youth" active={params.youth === 'true'} />
           <FilterChip href="/find?women=true" label="Women-owned" active={params.women === 'true'} />
+          <FilterChip href="/find?over35=true" label="35 and older" active={params.over35 === 'true'} />
         </div>
 
         {opportunities.length === 0 ? (

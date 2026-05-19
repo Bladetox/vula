@@ -108,6 +108,7 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem', marginTop: 'auto' }}>
         {opp.target_youth       && <Tag label="Youth" />}
         {opp.target_women       && <Tag label="Women" />}
+        {opp.target_over35      && <Tag label="35+" />}
         {opp.target_cooperative && <Tag label="Co-op" />}
         {!opp.requires_registration && <Tag label="Informal eligible" color="gold" />}
         {opp.funding_type       && <Tag label={opp.funding_type} />}

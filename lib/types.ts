@@ -16,6 +16,7 @@ export type FundingOpportunity = {
   target_informal: boolean
   target_rural: boolean
   target_township: boolean
+  target_over35: boolean
   eligibility_notes: string | null
   documents_required: string[]
   apply_url: string | null
