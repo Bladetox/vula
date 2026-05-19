@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { FundingOpportunity } from '@/lib/types'
+import NextSlotCard from '@/components/NextSlotCard'
 
 // The dynamic segment is the opportunity UUID (id), not a slug.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -344,6 +345,10 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
             </p>
           </div>
         </article>
+
+        {/* NextSlot partnership card — only shown for relevant service business opportunities */}
+        {opp.show_nextslot_card && <NextSlotCard />}
+
       </section>
     </main>
   )
