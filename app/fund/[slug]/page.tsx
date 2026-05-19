@@ -2,15 +2,17 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import type { FundingOpportunity } from '@/lib/types'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const supabase = await createClient()
   const { data } = await supabase.from('funding_opportunities').select('title, description').eq('slug', slug).single()
-  if (!data) return { title: 'Not found' }
+  const opp = data as Pick<FundingOpportunity, 'title' | 'description'> | null
+  if (!opp) return { title: 'Not found' }
   return {
-    title: `${data.title} | Vula`,
-    description: data.description
+    title: `${opp.title} | Vula`,
+    description: opp.description
   }
 }
 
@@ -24,12 +26,13 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }
 export default async function FundPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const supabase = await createClient()
-  const { data: opp } = await supabase
+  const { data } = await supabase
     .from('funding_opportunities')
     .select('*')
     .eq('slug', slug)
     .single()
 
+  const opp = data as FundingOpportunity | null
   if (!opp) notFound()
 
   const status = STATUS_CONFIG[opp.status] ?? STATUS_CONFIG['open']
