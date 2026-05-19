@@ -63,7 +63,7 @@ export function Nav() {
         </Link>
 
         {/* Desktop nav */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.125rem' }} className="hidden md:flex">
+        <div className="hidden md:flex" style={{ alignItems: 'center', gap: '0.125rem' }}>
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href
             return (
@@ -89,17 +89,15 @@ export function Nav() {
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
+          className="md:hidden"
           style={{
             padding: '0.5rem',
             borderRadius: 'var(--radius)',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            color: 'var(--vula-ink)',
-            display: 'none'
+            color: 'var(--vula-ink)'
           }}
-          className="md:hidden"
-          style={{ display: 'none' }}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
         >
@@ -116,12 +114,12 @@ export function Nav() {
       {/* Mobile drawer */}
       {open && (
         <div
+          className="md:hidden"
           style={{
             borderTop: '1px solid var(--vula-border)',
             background: 'var(--vula-surface)',
             padding: '0.75rem 1.25rem 1rem'
           }}
-          className="md:hidden"
         >
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href
