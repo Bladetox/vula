@@ -11,17 +11,42 @@ export default async function FindPage({
   const params = await searchParams
   const supabase = await createClient()
 
+  // Resolve industry filter via join table
+  let opportunityIds: string[] | null = null
+  if (params.industry) {
+    const { data: ind } = await supabase
+      .from('industries')
+      .select('id')
+      .eq('slug', params.industry)
+      .single()
+
+    if (ind) {
+      const { data: joins } = await supabase
+        .from('opportunity_industries')
+        .select('opportunity_id')
+        .eq('industry_id', ind.id)
+
+      opportunityIds = (joins ?? []).map((j: { opportunity_id: string }) => j.opportunity_id)
+    } else {
+      opportunityIds = []
+    }
+  }
+
   let query = supabase
     .from('funding_opportunities')
     .select('*')
     .neq('status', 'closed')
     .order('title')
 
+  if (opportunityIds !== null) {
+    if (opportunityIds.length === 0) {
+      return renderPage(params, [])
+    }
+    query = query.in('id', opportunityIds)
+  }
+
   if (params.type === 'informal' || params.informal === 'true') {
     query = query.eq('requires_registration', false)
-  }
-  if (params.industry) {
-    query = query.contains('industries', [params.industry])
   }
   if (params.youth === 'true') {
     query = query.eq('target_youth', true)
@@ -33,6 +58,13 @@ export default async function FindPage({
   const { data } = await query
   const opportunities = (data ?? []) as FundingOpportunity[]
 
+  return renderPage(params, opportunities)
+}
+
+function renderPage(
+  params: { type?: string; industry?: string; youth?: string; women?: string; informal?: string },
+  opportunities: FundingOpportunity[]
+) {
   const noFilter = !params.type && !params.informal && !params.youth && !params.women
 
   return (

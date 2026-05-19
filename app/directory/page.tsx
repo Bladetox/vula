@@ -11,15 +11,44 @@ export default async function DirectoryPage({
   const params = await searchParams
   const supabase = await createClient()
 
+  // If an industry filter is active, first resolve the industry UUID,
+  // then fetch opportunity IDs from the join table.
+  let opportunityIds: string[] | null = null
+  if (params.industry) {
+    const { data: ind } = await supabase
+      .from('industries')
+      .select('id')
+      .eq('slug', params.industry)
+      .single()
+
+    if (ind) {
+      const { data: joins } = await supabase
+        .from('opportunity_industries')
+        .select('opportunity_id')
+        .eq('industry_id', ind.id)
+
+      opportunityIds = (joins ?? []).map((j: { opportunity_id: string }) => j.opportunity_id)
+    } else {
+      opportunityIds = [] // unknown industry slug — return nothing
+    }
+  }
+
   let query = supabase
     .from('funding_opportunities')
     .select('*')
     .neq('status', 'closed')
     .order('title')
 
-  if (params.industry) {
-    query = query.contains('industries', [params.industry])
+  if (opportunityIds !== null) {
+    if (opportunityIds.length === 0) {
+      // No matches for this industry — short-circuit
+      const { data: indsData } = await supabase.from('industries').select('slug, name').order('name')
+      const industries = (indsData ?? []) as Industry[]
+      return renderPage(params, [], industries)
+    }
+    query = query.in('id', opportunityIds)
   }
+
   if (params.status) {
     query = query.eq('status', params.status)
   }
@@ -30,6 +59,14 @@ export default async function DirectoryPage({
   const opportunities = (oppsData ?? []) as FundingOpportunity[]
   const industries = (indsData ?? []) as Industry[]
 
+  return renderPage(params, opportunities, industries)
+}
+
+function renderPage(
+  params: { industry?: string; status?: string },
+  opportunities: FundingOpportunity[],
+  industries: Industry[]
+) {
   const noFilter = !params.industry && !params.status
 
   return (

@@ -1,24 +1,27 @@
 export type FundingOpportunity = {
   id: string
-  slug: string
   title: string
   funder: string
   description: string
   amount_min: number | null
   amount_max: number | null
-  status: 'open' | 'seasonal' | 'pilot' | 'closed'
+  amount_label: string | null
+  status: string
+  funding_type: string | null
   requires_registration: boolean
   target_youth: boolean
   target_women: boolean
   target_disability: boolean
   target_cooperative: boolean
   target_informal: boolean
-  apply_url: string | null
-  official_source_url: string | null
-  funding_type: string | null
-  industries: string[]
+  target_rural: boolean
+  target_township: boolean
   eligibility_notes: string | null
   documents_required: string[]
+  apply_url: string | null
+  source_url: string | null
+  source_verified: boolean
+  published: boolean
   created_at: string
   updated_at: string
 }
@@ -27,8 +30,8 @@ export type Industry = {
   id: string
   slug: string
   name: string
-  icon_name: string
-  created_at: string
+  icon_name?: string | null
+  created_at?: string
 }
 
 export type Submission = {
@@ -39,7 +42,7 @@ export type Submission = {
   description: string
   eligibility: string | null
   apply_url: string | null
-  official_source_url: string | null
+  source_url: string | null
   sector_tags: string[]
   status: 'pending' | 'verified' | 'rejected'
   submitted_by_email: string | null

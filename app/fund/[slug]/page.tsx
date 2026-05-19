@@ -4,13 +4,14 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { FundingOpportunity } from '@/lib/types'
 
+// The dynamic segment is the opportunity UUID (id), not a slug.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+  const { slug: id } = await params
   const supabase = await createClient()
   const { data } = await supabase
     .from('funding_opportunities')
     .select('title, description')
-    .eq('slug', slug)
+    .eq('id', id)
     .single()
   const opp = data as Pick<FundingOpportunity, 'title' | 'description'> | null
   if (!opp) return { title: 'Not found' }
@@ -22,24 +23,30 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
   open:     { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
+  ongoing:  { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
   seasonal: { label: 'Seasonal', bg: '#fef5e0',                   color: '#92600a' },
   pilot:    { label: 'Pilot',    bg: '#f0edff',                   color: '#5b21b6' },
   closed:   { label: 'Closed',   bg: '#f3f3f2',                   color: 'var(--vula-faint)' },
 }
 
 export default async function FundPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+  const { slug: id } = await params
   const supabase = await createClient()
   const { data } = await supabase
     .from('funding_opportunities')
     .select('*')
-    .eq('slug', slug)
+    .eq('id', id)
     .single()
 
   const opp = data as FundingOpportunity | null
   if (!opp) notFound()
 
   const status = STATUS_CONFIG[opp.status] ?? STATUS_CONFIG['open']
+
+  // Determine the primary CTA URL: prefer apply_url, fall back to source_url
+  const primaryUrl = opp.apply_url || opp.source_url
+  // Show secondary source link only when it differs from the primary
+  const showSecondary = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
 
   return (
     <main>
@@ -136,7 +143,7 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
           {/* Body */}
           <div style={{ padding: '1.75rem' }}>
             {/* Amount */}
-            {(opp.amount_max || opp.amount_min) && (
+            {(opp.amount_max || opp.amount_min || opp.amount_label) && (
               <div
                 style={{
                   background: 'var(--vula-green-subtle)',
@@ -169,9 +176,11 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                     lineHeight: 1,
                   }}
                 >
-                  {opp.amount_max
-                    ? `Up to R${opp.amount_max.toLocaleString('en-ZA')}`
-                    : `From R${opp.amount_min?.toLocaleString('en-ZA')}`}
+                  {opp.amount_label
+                    ? opp.amount_label
+                    : opp.amount_max
+                      ? `Up to R${opp.amount_max.toLocaleString('en-ZA')}`
+                      : `From R${opp.amount_min?.toLocaleString('en-ZA')}`}
                 </p>
               </div>
             )}
@@ -267,9 +276,9 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
 
             {/* CTAs */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-              {opp.apply_url && (
+              {primaryUrl && (
                 <a
-                  href={opp.apply_url}
+                  href={primaryUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -293,9 +302,9 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                   </svg>
                 </a>
               )}
-              {opp.official_source_url && opp.official_source_url !== opp.apply_url && (
+              {showSecondary && (
                 <a
-                  href={opp.official_source_url}
+                  href={opp.source_url!}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{

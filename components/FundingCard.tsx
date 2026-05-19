@@ -3,6 +3,7 @@ import type { FundingOpportunity } from '@/lib/types'
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
   open:     { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
+  ongoing:  { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
   seasonal: { label: 'Seasonal', bg: '#fef5e0',                   color: '#92600a' },
   pilot:    { label: 'Pilot',    bg: '#f0edff',                   color: '#5b21b6' },
   closed:   { label: 'Closed',   bg: '#f3f3f2',                   color: 'var(--vula-faint)' }
@@ -13,7 +14,7 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
 
   return (
     <Link
-      href={`/fund/${opp.slug}`}
+      href={`/fund/${opp.id}`}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -68,7 +69,7 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
       </div>
 
       {/* Amount */}
-      {opp.amount_max && (
+      {(opp.amount_max || opp.amount_label) && (
         <p
           style={{
             fontSize: '1.25rem',
@@ -78,7 +79,13 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
             lineHeight: 1
           }}
         >
-          Up to R{opp.amount_max.toLocaleString('en-ZA')}
+          {opp.amount_label
+            ? opp.amount_label
+            : opp.amount_max
+              ? `Up to R${opp.amount_max.toLocaleString('en-ZA')}`
+              : opp.amount_min
+                ? `From R${opp.amount_min.toLocaleString('en-ZA')}`
+                : null}
         </p>
       )}
 
@@ -99,11 +106,11 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
 
       {/* Tags */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem', marginTop: 'auto' }}>
-        {opp.target_youth      && <Tag label="Youth" />}
-        {opp.target_women      && <Tag label="Women" />}
+        {opp.target_youth       && <Tag label="Youth" />}
+        {opp.target_women       && <Tag label="Women" />}
         {opp.target_cooperative && <Tag label="Co-op" />}
         {!opp.requires_registration && <Tag label="Informal eligible" color="gold" />}
-        {opp.funding_type      && <Tag label={opp.funding_type} />}
+        {opp.funding_type       && <Tag label={opp.funding_type} />}
       </div>
     </Link>
   )
