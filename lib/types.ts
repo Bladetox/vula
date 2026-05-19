@@ -24,6 +24,7 @@ export type FundingOpportunity = {
   source_url: string | null
   source_verified: boolean
   published: boolean
+  deadline: string | null
   created_at: string
   updated_at: string
 }

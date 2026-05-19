@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { FundingOpportunity } from '@/lib/types'
+import { DeadlineCountdown } from '@/components/DeadlineCountdown'
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
   open:     { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
@@ -104,14 +105,15 @@ export function FundingCard({ opportunity: opp }: { opportunity: FundingOpportun
         {opp.description}
       </p>
 
-      {/* Tags */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem', marginTop: 'auto' }}>
+      {/* Tags + deadline row */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem', marginTop: 'auto', alignItems: 'center' }}>
         {opp.target_youth       && <Tag label="Youth" />}
         {opp.target_women       && <Tag label="Women" />}
         {opp.target_over35      && <Tag label="35+" />}
         {opp.target_cooperative && <Tag label="Co-op" />}
         {!opp.requires_registration && <Tag label="Informal eligible" color="gold" />}
         {opp.funding_type       && <Tag label={opp.funding_type} />}
+        {opp.deadline && <DeadlineCountdown deadline={opp.deadline} />}
       </div>
     </Link>
   )
