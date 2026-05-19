@@ -1,47 +1,111 @@
 @import 'tailwindcss';
 
+/* Art direction: funding discovery for South African SMMEs
+   Palette: warm off-white surfaces, deep forest green accent, gold secondary
+   Typography: Plus Jakarta Sans (clean, modern, warm) — system as fallback
+   Density: balanced — generous hero, compact cards */
+
 :root {
-  --vula-green: #1a6b3c;
-  --vula-green-light: #e8f5ee;
-  --vula-gold: #c8922a;
-  --vula-gold-light: #fdf5e6;
-  --vula-ink: #111111;
-  --vula-muted: #6b7280;
-  --vula-border: #e5e7eb;
-  --vula-surface: #ffffff;
-  --vula-bg: #f9fafb;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 16px;
+  /* Brand */
+  --vula-green:        #1a6b3c;
+  --vula-green-hover:  #155c33;
+  --vula-green-active: #0f4426;
+  --vula-green-light:  #e6f2ec;
+  --vula-green-subtle: #f0f7f3;
+  --vula-gold:         #b07a00;
+  --vula-gold-light:   #fdf5e0;
+
+  /* Surfaces — warm, not sterile grey */
+  --vula-bg:        #f6f5f2;
+  --vula-surface:   #fdfcfa;
+  --vula-surface-2: #ffffff;
+  --vula-border:    oklch(from #111111 l c h / 0.10);
+  --vula-border-em: oklch(from #111111 l c h / 0.18);
+
+  /* Text */
+  --vula-ink:        #111111;
+  --vula-muted:      #5a5955;
+  --vula-faint:      #9b9893;
+
+  /* Radius */
+  --radius-sm:  6px;
+  --radius:     10px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+
+  /* Shadows — warm tint */
+  --shadow-sm: 0 1px 3px oklch(0.18 0.02 80 / 0.07), 0 1px 2px oklch(0.18 0.02 80 / 0.04);
+  --shadow-md: 0 4px 16px oklch(0.18 0.02 80 / 0.09), 0 1px 4px oklch(0.18 0.02 80 / 0.05);
+  --shadow-lg: 0 12px 40px oklch(0.18 0.02 80 / 0.13), 0 2px 8px oklch(0.18 0.02 80 / 0.06);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --duration-fast: 120ms;
+  --duration-mid:  200ms;
+  --duration-slow: 340ms;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
+  hanging-punctuation: first last;
 }
 
 body {
-  background-color: var(--vula-bg);
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--vula-ink);
+  background-color: var(--vula-bg);
   min-height: 100dvh;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+  line-height: 1.15;
+}
+
+p, li {
+  text-wrap: pretty;
+  max-width: 68ch;
+}
+
+img, svg { display: block; max-width: 100%; }
 
 ::selection {
   background: var(--vula-green-light);
   color: var(--vula-green);
 }
 
-/* Focus visible only for keyboard nav */
 :focus-visible {
   outline: 2px solid var(--vula-green);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
 }
 
-:focus:not(:focus-visible) {
-  outline: none;
+:focus:not(:focus-visible) { outline: none; }
+
+a, button, [role="button"] {
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-mid) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

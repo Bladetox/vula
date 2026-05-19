@@ -17,45 +17,97 @@ export function Nav() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[var(--vula-border)]">
-      <nav className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between" aria-label="Main navigation">
-        <Link href="/" className="flex items-center gap-2" aria-label="Vula home">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-            <rect width="28" height="28" rx="8" fill="var(--vula-green)" />
-            <path d="M8 8l6 12 6-12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        background: 'oklch(from #fdfcfa l c h / 0.92)',
+        backdropFilter: 'blur(12px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        borderBottom: '1px solid var(--vula-border)'
+      }}
+    >
+      <nav
+        style={{
+          maxWidth: '64rem',
+          margin: '0 auto',
+          padding: '0 1.25rem',
+          height: '3.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+        aria-label="Main navigation"
+      >
+        {/* Logo */}
+        <Link
+          href="/"
+          aria-label="Vula home"
+          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}
+        >
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+            <rect width="26" height="26" rx="7" fill="var(--vula-green)" />
+            <path d="M7 8l6 11 6-11" stroke="white" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="font-bold text-[var(--vula-ink)] text-lg tracking-tight">Vula</span>
+          <span
+            style={{
+              fontWeight: 700,
+              fontSize: '1rem',
+              color: 'var(--vula-ink)',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            Vula
+          </span>
         </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm px-3 py-2 rounded-lg transition-colors duration-150 ${
-                pathname === link.href
-                  ? 'font-semibold text-[var(--vula-green)] bg-[var(--vula-green-light)]'
-                  : 'text-[var(--vula-muted)] hover:text-[var(--vula-ink)] hover:bg-[var(--vula-bg)]'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Desktop nav */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.125rem' }} className="hidden md:flex">
+          {NAV_LINKS.map((link) => {
+            const active = pathname === link.href
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={{
+                  fontSize: '0.8125rem',
+                  fontWeight: active ? 600 : 450,
+                  padding: '0.4rem 0.75rem',
+                  borderRadius: 'var(--radius)',
+                  textDecoration: 'none',
+                  color: active ? 'var(--vula-green)' : 'var(--vula-muted)',
+                  background: active ? 'var(--vula-green-subtle)' : 'transparent'
+                }}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </div>
 
         {/* Mobile menu button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden p-2 rounded-lg hover:bg-[var(--vula-bg)] transition-colors"
+          style={{
+            padding: '0.5rem',
+            borderRadius: 'var(--radius)',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            color: 'var(--vula-ink)',
+            display: 'none'
+          }}
+          className="md:hidden"
+          style={{ display: 'none' }}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
         >
           <svg width="20" height="20" fill="none" viewBox="0 0 20 20" aria-hidden="true">
             {open ? (
-              <path d="M4 4l12 12M16 4L4 16" stroke="var(--vula-ink)" strokeWidth="1.75" strokeLinecap="round" />
+              <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
             ) : (
-              <path d="M3 5h14M3 10h14M3 15h14" stroke="var(--vula-ink)" strokeWidth="1.75" strokeLinecap="round" />
+              <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
             )}
           </svg>
         </button>
@@ -63,21 +115,36 @@ export function Nav() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-t border-[var(--vula-border)] bg-white px-4 py-4 space-y-1">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className={`block text-sm px-4 py-3 rounded-xl transition-colors duration-150 ${
-                pathname === link.href
-                  ? 'font-semibold text-[var(--vula-green)] bg-[var(--vula-green-light)]'
-                  : 'text-[var(--vula-ink)] hover:bg-[var(--vula-bg)]'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div
+          style={{
+            borderTop: '1px solid var(--vula-border)',
+            background: 'var(--vula-surface)',
+            padding: '0.75rem 1.25rem 1rem'
+          }}
+          className="md:hidden"
+        >
+          {NAV_LINKS.map((link) => {
+            const active = pathname === link.href
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                style={{
+                  display: 'block',
+                  fontSize: '0.9375rem',
+                  fontWeight: active ? 600 : 400,
+                  padding: '0.75rem 1rem',
+                  borderRadius: 'var(--radius-lg)',
+                  textDecoration: 'none',
+                  color: active ? 'var(--vula-green)' : 'var(--vula-ink)',
+                  background: active ? 'var(--vula-green-subtle)' : 'transparent'
+                }}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </div>
       )}
     </header>

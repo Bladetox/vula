@@ -26,14 +26,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=plus-jakarta-sans@400,500,600,700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <Nav />
-        <main id="main" className="min-h-dvh">
+        <div id="main" className="min-h-dvh">
           {children}
-        </main>
-        <footer className="border-t border-[var(--vula-border)] mt-16 py-10 px-6 text-center text-sm text-[var(--vula-muted)]">
+        </div>
+        <footer
+          style={{
+            borderTop: '1px solid var(--vula-border)',
+            marginTop: '5rem',
+            padding: '2.5rem 1.5rem',
+            textAlign: 'center',
+            fontSize: '0.8125rem',
+            color: 'var(--vula-muted)',
+            background: 'var(--vula-surface)'
+          }}
+        >
           <p>Vula is an independent directory. Always verify funding details on official sources before applying.</p>
-          <p className="mt-1">Built for South African founders. Cape Town, 2026.</p>
+          <p style={{ marginTop: '0.25rem', color: 'var(--vula-faint)' }}>Built for South African founders. Cape Town, 2026.</p>
         </footer>
       </body>
     </html>
