@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: '/find',      label: 'Find funding' },
   { href: '/browse',    label: 'Browse' },
   { href: '/directory', label: 'Directory' },
+  { href: '/faq',       label: 'FAQ' },
   { href: '/register',  label: 'Get registered' },
   { href: '/submit',    label: 'Submit a listing' },
 ]
