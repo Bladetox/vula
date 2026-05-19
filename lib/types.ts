@@ -18,10 +18,12 @@ export type FundingOpportunity = {
   target_township: boolean
   target_over35: boolean
   show_nextslot_card: boolean
+  min_turnover: number | null
+  max_turnover: number | null
   eligibility_notes: string | null
   documents_required: string[]
   apply_url: string | null
-  source_url: string | null
+  source_url: string
   source_verified: boolean
   published: boolean
   deadline: string | null

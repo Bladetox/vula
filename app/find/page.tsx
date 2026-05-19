@@ -6,12 +6,11 @@ import type { FundingOpportunity } from '@/lib/types'
 export default async function FindPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string }>
+  searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string; cooperative?: string }>
 }) {
   const params = await searchParams
   const supabase = await createClient()
 
-  // Resolve industry filter via join table
   let opportunityIds: string[] | null = null
   if (params.industry) {
     const { data: indRaw } = await supabase
@@ -38,6 +37,7 @@ export default async function FindPage({
   let query = supabase
     .from('funding_opportunities')
     .select('*')
+    .eq('published', true)
     .neq('status', 'closed')
     .order('title')
 
@@ -60,6 +60,9 @@ export default async function FindPage({
   if (params.over35 === 'true') {
     query = query.eq('target_over35', true)
   }
+  if (params.cooperative === 'true') {
+    query = query.eq('target_cooperative', true)
+  }
 
   const { data } = await query
   const opportunities = (data ?? []) as FundingOpportunity[]
@@ -68,14 +71,13 @@ export default async function FindPage({
 }
 
 function renderPage(
-  params: { type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string },
+  params: { type?: string; industry?: string; youth?: string; women?: string; over35?: string; informal?: string; cooperative?: string },
   opportunities: FundingOpportunity[]
 ) {
-  const noFilter = !params.type && !params.informal && !params.youth && !params.women && !params.over35
+  const noFilter = !params.type && !params.informal && !params.youth && !params.women && !params.over35 && !params.cooperative
 
   return (
     <main>
-      {/* Page header */}
       <section
         style={{
           background: 'var(--vula-bg)',
@@ -119,7 +121,6 @@ function renderPage(
         </div>
       </section>
 
-      {/* Filters + results */}
       <section
         style={{
           maxWidth: '48rem',
@@ -127,7 +128,6 @@ function renderPage(
           padding: 'clamp(1.5rem, 3vw, 2.5rem) 1.25rem clamp(4rem, 8vw, 6rem)',
         }}
       >
-        {/* Filter chips */}
         <div
           style={{
             display: 'flex',
@@ -143,6 +143,7 @@ function renderPage(
           <FilterChip href="/find?youth=true" label="Youth" active={params.youth === 'true'} />
           <FilterChip href="/find?women=true" label="Women-owned" active={params.women === 'true'} />
           <FilterChip href="/find?over35=true" label="35 and older" active={params.over35 === 'true'} />
+          <FilterChip href="/find?cooperative=true" label="Co-operative" active={params.cooperative === 'true'} />
         </div>
 
         {opportunities.length === 0 ? (

@@ -11,8 +11,6 @@ export default async function DirectoryPage({
   const params = await searchParams
   const supabase = await createClient()
 
-  // If an industry filter is active, first resolve the industry UUID,
-  // then fetch opportunity IDs from the join table.
   let opportunityIds: string[] | null = null
   if (params.industry) {
     const { data: indRaw } = await supabase
@@ -32,19 +30,19 @@ export default async function DirectoryPage({
       const joins = (joinsRaw ?? []) as { opportunity_id: string }[]
       opportunityIds = joins.map((j) => j.opportunity_id)
     } else {
-      opportunityIds = [] // unknown industry slug — return nothing
+      opportunityIds = []
     }
   }
 
   let query = supabase
     .from('funding_opportunities')
     .select('*')
+    .eq('published', true)
     .neq('status', 'closed')
     .order('title')
 
   if (opportunityIds !== null) {
     if (opportunityIds.length === 0) {
-      // No matches for this industry — short-circuit
       const { data: indsData } = await supabase.from('industries').select('slug, name').order('name')
       const industries = (indsData ?? []) as Industry[]
       return renderPage(params, [], industries)
@@ -74,7 +72,6 @@ function renderPage(
 
   return (
     <main>
-      {/* Page header */}
       <section
         style={{
           background: 'var(--vula-bg)',
@@ -118,7 +115,6 @@ function renderPage(
         </div>
       </section>
 
-      {/* Filters + results */}
       <section
         style={{
           maxWidth: '64rem',
@@ -126,7 +122,6 @@ function renderPage(
           padding: 'clamp(1.5rem, 3vw, 2.5rem) 1.25rem clamp(4rem, 8vw, 6rem)',
         }}
       >
-        {/* Industry filter chips */}
         <div
           style={{
             display: 'flex',

@@ -8,6 +8,7 @@ export default async function HomePage() {
   const { data } = await supabase
     .from('funding_opportunities')
     .select('*')
+    .eq('published', true)
     .neq('status', 'closed')
     .order('created_at', { ascending: false })
     .limit(3)
@@ -26,11 +27,6 @@ export default async function HomePage() {
           padding: 'clamp(3.5rem, 8vw, 6rem) 1.25rem clamp(2.5rem, 5vw, 4rem)',
         }}
       >
-        {/*
-          Background watermark — the mark tiled at 340px, very faint.
-          Rendered as an inline SVG data-uri so no extra network request
-          and it inherits nothing from CSS color.
-        */}
         <div
           aria-hidden="true"
           style={{
@@ -44,14 +40,11 @@ export default async function HomePage() {
           }}
         />
 
-        {/* Content sits above watermark */}
         <div style={{ position: 'relative' }}>
-          {/* Mark — large, above eyebrow */}
           <div style={{ marginBottom: '1.5rem', color: 'var(--vula-green)' }}>
             <VulaMark size={52} />
           </div>
 
-          {/* Eyebrow */}
           <p
             style={{
               display: 'inline-flex',
@@ -321,7 +314,7 @@ export default async function HomePage() {
                       {opp.title}
                     </p>
                   </div>
-                  {opp.amount_max && (
+                  {(opp.amount_label || opp.amount_max || opp.amount_min) && (
                     <span
                       style={{
                         flexShrink: 0,
@@ -334,7 +327,11 @@ export default async function HomePage() {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      Up to R{opp.amount_max.toLocaleString('en-ZA')}
+                      {opp.amount_label
+                        ? opp.amount_label
+                        : opp.amount_max
+                          ? `Up to R${opp.amount_max.toLocaleString('en-ZA')}`
+                          : `From R${opp.amount_min!.toLocaleString('en-ZA')}`}
                     </span>
                   )}
                 </div>
