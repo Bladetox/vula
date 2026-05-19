@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { FundingCard } from '@/components/FundingCard'
+import Link from 'next/link'
 import type { FundingOpportunity } from '@/lib/types'
 
 export default async function FindPage({
-  searchParams
+  searchParams,
 }: {
   searchParams: Promise<{ type?: string; industry?: string; youth?: string; women?: string; informal?: string }>
 }) {
@@ -32,47 +33,126 @@ export default async function FindPage({
   const { data } = await query
   const opportunities = (data ?? []) as FundingOpportunity[]
 
+  const noFilter = !params.type && !params.informal && !params.youth && !params.women
+
   return (
-    <div className="max-w-3xl mx-auto px-4 pt-10 pb-24">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[var(--vula-ink)] mb-2">Find your funding</h1>
-        <p className="text-[var(--vula-muted)]">Opportunities matched to your business profile.</p>
-      </div>
-
-      {/* Quick filters */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        <FilterChip href="/find" label="All" active={!params.type && !params.informal && !params.youth && !params.women} />
-        <FilterChip href="/find?type=informal" label="No registration needed" active={params.type === 'informal'} />
-        <FilterChip href="/find?youth=true" label="Youth" active={params.youth === 'true'} />
-        <FilterChip href="/find?women=true" label="Women-owned" active={params.women === 'true'} />
-      </div>
-
-      {!opportunities.length ? (
-        <div className="text-center py-16 text-[var(--vula-muted)]">
-          No opportunities match these filters right now.
+    <main>
+      {/* Page header */}
+      <section
+        style={{
+          background: 'var(--vula-bg)',
+          borderBottom: '1px solid var(--vula-border)',
+          padding: 'clamp(2.5rem, 5vw, 4rem) 1.25rem clamp(2rem, 4vw, 3rem)',
+        }}
+      >
+        <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '0.07em',
+              textTransform: 'uppercase',
+              color: 'var(--vula-green)',
+              marginBottom: '0.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+            }}
+          >
+            <svg width="6" height="6" viewBox="0 0 6 6" aria-hidden="true">
+              <circle cx="3" cy="3" r="3" fill="var(--vula-green)" />
+            </svg>
+            Funding search
+          </p>
+          <h1
+            style={{
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+              fontWeight: 800,
+              letterSpacing: '-0.03em',
+              color: 'var(--vula-ink)',
+              marginBottom: '0.5rem',
+            }}
+          >
+            Find your funding
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--vula-muted)', lineHeight: 1.6 }}>
+            Opportunities matched to your business profile. Always verify on the official source before applying.
+          </p>
         </div>
-      ) : (
-        <div className="grid gap-4">
-          {opportunities.map((opp) => (
-            <FundingCard key={opp.id} opportunity={opp} />
-          ))}
+      </section>
+
+      {/* Filters + results */}
+      <section
+        style={{
+          maxWidth: '48rem',
+          margin: '0 auto',
+          padding: 'clamp(1.5rem, 3vw, 2.5rem) 1.25rem clamp(4rem, 8vw, 6rem)',
+        }}
+      >
+        {/* Filter chips */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.5rem',
+            marginBottom: '1.75rem',
+          }}
+          role="group"
+          aria-label="Filter opportunities"
+        >
+          <FilterChip href="/find" label="All" active={noFilter} />
+          <FilterChip href="/find?type=informal" label="No registration needed" active={params.type === 'informal'} />
+          <FilterChip href="/find?youth=true" label="Youth" active={params.youth === 'true'} />
+          <FilterChip href="/find?women=true" label="Women-owned" active={params.women === 'true'} />
         </div>
-      )}
-    </div>
+
+        {opportunities.length === 0 ? (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '4rem 1rem',
+              color: 'var(--vula-muted)',
+            }}
+          >
+            <svg width="40" height="40" fill="none" viewBox="0 0 24 24" aria-hidden="true" style={{ marginBottom: '1rem', color: 'var(--vula-faint)' }}>
+              <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <p style={{ fontWeight: 600, color: 'var(--vula-ink)', marginBottom: '0.375rem' }}>No opportunities match</p>
+            <p style={{ fontSize: '0.875rem' }}>Try a different filter or check back later.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {opportunities.map((opp) => (
+              <FundingCard key={opp.id} opportunity={opp} />
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
   )
 }
-
-import Link from 'next/link'
 
 function FilterChip({ href, label, active }: { href: string; label: string; active: boolean }) {
   return (
     <Link
       href={href}
-      className={`text-sm px-4 py-2 rounded-full border transition-colors duration-150 ${
-        active
-          ? 'bg-[var(--vula-green)] text-white border-[var(--vula-green)]'
-          : 'bg-white text-[var(--vula-ink)] border-[var(--vula-border)] hover:border-[var(--vula-green)]'
-      }`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        fontSize: '0.8125rem',
+        fontWeight: active ? 600 : 500,
+        padding: '0.4rem 1rem',
+        borderRadius: '999px',
+        textDecoration: 'none',
+        border: '1px solid',
+        borderColor: active ? 'var(--vula-green)' : 'var(--vula-border)',
+        background: active ? 'var(--vula-green)' : 'var(--vula-surface)',
+        color: active ? '#fff' : 'var(--vula-ink)',
+      }}
     >
       {label}
     </Link>

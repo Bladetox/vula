@@ -31,33 +31,134 @@ export default async function BrowsePage() {
   const industries = (data ?? []) as Industry[]
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-10 pb-24">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold text-[var(--vula-ink)] mb-2">Browse by industry</h1>
-        <p className="text-[var(--vula-muted)]">Select your sector to see relevant funding opportunities.</p>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {industries.map((ind) => (
-          <Link
-            key={ind.slug}
-            href={`/directory?industry=${ind.slug}`}
-            className="group flex flex-col items-start gap-3 bg-white border border-[var(--vula-border)] rounded-2xl p-5 hover:border-[var(--vula-green)] hover:shadow-md transition-all duration-150"
+    <main>
+      {/* Page header */}
+      <section
+        style={{
+          background: 'var(--vula-bg)',
+          borderBottom: '1px solid var(--vula-border)',
+          padding: 'clamp(2.5rem, 5vw, 4rem) 1.25rem clamp(2rem, 4vw, 3rem)',
+        }}
+      >
+        <div style={{ maxWidth: '64rem', margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '0.07em',
+              textTransform: 'uppercase',
+              color: 'var(--vula-green)',
+              marginBottom: '0.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+            }}
           >
-            <div className="w-10 h-10 rounded-xl bg-[var(--vula-green-light)] flex items-center justify-center">
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d={INDUSTRY_ICONS[ind.slug] ?? INDUSTRY_ICONS['general']}
-                  stroke="var(--vula-green)"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <span className="text-sm font-semibold text-[var(--vula-ink)] group-hover:text-[var(--vula-green)] transition-colors duration-150 leading-tight">{ind.name}</span>
-          </Link>
-        ))}
-      </div>
-    </div>
+            <svg width="6" height="6" viewBox="0 0 6 6" aria-hidden="true">
+              <circle cx="3" cy="3" r="3" fill="var(--vula-green)" />
+            </svg>
+            Explore
+          </p>
+          <h1
+            style={{
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
+              fontWeight: 800,
+              letterSpacing: '-0.03em',
+              color: 'var(--vula-ink)',
+              marginBottom: '0.5rem',
+            }}
+          >
+            Browse by industry
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--vula-muted)', lineHeight: 1.6 }}>
+            Select your sector to see relevant funding opportunities.
+          </p>
+        </div>
+      </section>
+
+      {/* Grid */}
+      <section
+        style={{
+          maxWidth: '64rem',
+          margin: '0 auto',
+          padding: 'clamp(2rem, 4vw, 3rem) 1.25rem clamp(4rem, 8vw, 6rem)',
+        }}
+      >
+        {industries.length === 0 ? (
+          <div
+            style={{
+              textAlign: 'center',
+              padding: '4rem 1rem',
+              color: 'var(--vula-muted)',
+              fontSize: '0.9375rem',
+            }}
+          >
+            No industries loaded yet.
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 11rem), 1fr))',
+              gap: '0.875rem',
+            }}
+          >
+            {industries.map((ind) => (
+              <Link
+                key={ind.slug}
+                href={`/directory?industry=${ind.slug}`}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: '0.875rem',
+                  background: 'var(--vula-surface)',
+                  border: '1px solid var(--vula-border)',
+                  borderRadius: 'var(--radius-xl)',
+                  padding: '1.25rem',
+                  textDecoration: 'none',
+                  boxShadow: 'var(--shadow-sm)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '2.25rem',
+                    height: '2.25rem',
+                    borderRadius: 'var(--radius)',
+                    background: 'var(--vula-green-subtle)',
+                    border: '1px solid var(--vula-green-light)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    color: 'var(--vula-green)',
+                  }}
+                >
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d={INDUSTRY_ICONS[ind.slug] ?? INDUSTRY_ICONS['general']}
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 600,
+                    color: 'var(--vula-ink)',
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {ind.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
   )
 }
