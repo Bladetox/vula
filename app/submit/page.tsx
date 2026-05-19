@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import type { Database } from '@/lib/database.types'
+
+type SubmissionInsert = Database['public']['Tables']['submissions']['Insert']
 
 const SECTORS = [
   'Spaza & Retail', 'Beauty & Personal Care', 'Food & Catering',
@@ -37,7 +40,20 @@ export default function SubmitPage() {
     e.preventDefault()
     setStatus('submitting')
     const supabase = createClient()
-    const { error } = await supabase.from('submissions').insert([form])
+    const payload: SubmissionInsert = {
+      title: form.title,
+      funder: form.funder,
+      description: form.description,
+      amount_range: form.amount_range || null,
+      eligibility: form.eligibility || null,
+      apply_url: form.apply_url || null,
+      official_source_url: form.official_source_url || null,
+      submitted_by_email: form.submitted_by_email || null,
+      sector_tags: form.sector_tags,
+      status: 'pending',
+      reviewer_notes: null,
+    }
+    const { error } = await supabase.from('submissions').insert([payload])
     setStatus(error ? 'error' : 'success')
   }
 
