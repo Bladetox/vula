@@ -1,4 +1,4 @@
-import Link from 'next/link'
+'use client'
 
 export default function NextSlotCard() {
   return (
@@ -111,11 +111,12 @@ export default function NextSlotCard() {
           finally something to show for all of it.
         </p>
 
-        {/* CTA */}
+        {/* CTA — hover handled via CSS in globals.css */}
         <a
           href="https://nextslot.co.za"
           target="_blank"
           rel="noopener noreferrer"
+          className="nextslot-cta"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -127,12 +128,6 @@ export default function NextSlotCard() {
             borderBottom: '1.5px solid var(--vula-green-light)',
             paddingBottom: '0.125rem',
             transition: 'border-color var(--duration-fast) var(--ease-out)',
-          }}
-          onMouseEnter={e => {
-            ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--vula-green)'
-          }}
-          onMouseLeave={e => {
-            ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--vula-green-light)'
           }}
         >
           Worth a look
