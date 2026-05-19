@@ -7,7 +7,7 @@ export default async function HomePage() {
   const { data } = await supabase
     .from('funding_opportunities')
     .select('*')
-    .eq('status', 'open')
+    .neq('status', 'closed')
     .order('created_at', { ascending: false })
     .limit(3)
 
@@ -182,7 +182,7 @@ export default async function HomePage() {
             {featured.map((opp) => (
               <Link
                 key={opp.id}
-                href={`/fund/${opp.slug}`}
+                href={`/fund/${opp.id}`}
                 style={{
                   display: 'block',
                   background: 'var(--vula-surface-2)',
