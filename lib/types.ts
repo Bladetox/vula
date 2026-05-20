@@ -1,3 +1,5 @@
+export type BusinessStage = 'pre-revenue' | 'early' | 'growth' | 'established' | 'any'
+
 export type FundingOpportunity = {
   id: string
   title: string
@@ -20,6 +22,7 @@ export type FundingOpportunity = {
   show_nextslot_card: boolean
   min_turnover: number | null
   max_turnover: number | null
+  business_stage: BusinessStage
   eligibility_notes: string | null
   documents_required: string[]
   apply_url: string | null
