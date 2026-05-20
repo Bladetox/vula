@@ -80,13 +80,13 @@ function renderPage(
   opportunities: FundingOpportunity[],
   industries: Industry[]
 ) {
-  const noFilter = !params.industry && !params.status && !params.type
-
-  // Build base URL preserving industry param when switching type filter
   function typeHref(value?: string) {
     const base = params.industry ? `/directory?industry=${params.industry}` : '/directory'
     return value ? `${base}${params.industry ? '&' : '?'}type=${value}` : base
   }
+
+  const activeIndustry = industries.find((i) => i.slug === params.industry)
+  const clearIndustryHref = params.type ? `/directory?type=${params.type}` : '/directory'
 
   return (
     <main>
@@ -163,7 +163,10 @@ function renderPage(
           ))}
         </div>
 
-        {/* Industry filter */}
+        {/* Industry filter
+            - No active industry: show all pills
+            - Active industry: show only a clear pill + the selected pill
+        */}
         <div
           style={{
             display: 'flex',
@@ -176,15 +179,55 @@ function renderPage(
           role="group"
           aria-label="Filter by industry"
         >
-          <FilterChip href={params.type ? `/directory?type=${params.type}` : '/directory'} label="All industries" active={!params.industry} />
-          {industries.map((ind) => (
-            <FilterChip
-              key={ind.slug}
-              href={`/directory?industry=${ind.slug}${params.type ? `&type=${params.type}` : ''}`}
-              label={ind.name}
-              active={params.industry === ind.slug}
-            />
-          ))}
+          {params.industry && activeIndustry ? (
+            <>
+              {/* Clear pill */}
+              <Link
+                href={clearIndustryHref}
+                aria-label="Clear industry filter"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  padding: '0.4rem 0.875rem',
+                  borderRadius: '999px',
+                  textDecoration: 'none',
+                  border: '1px solid var(--vula-border)',
+                  background: 'var(--vula-surface)',
+                  color: 'var(--vula-muted)',
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M9 3L3 9M3 3l6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                All industries
+              </Link>
+              {/* Active industry pill only */}
+              <FilterChip
+                href={`/directory?industry=${activeIndustry.slug}${params.type ? `&type=${params.type}` : ''}`}
+                label={activeIndustry.name}
+                active={true}
+              />
+            </>
+          ) : (
+            <>
+              <FilterChip
+                href={params.type ? `/directory?type=${params.type}` : '/directory'}
+                label="All industries"
+                active={!params.industry}
+              />
+              {industries.map((ind) => (
+                <FilterChip
+                  key={ind.slug}
+                  href={`/directory?industry=${ind.slug}${params.type ? `&type=${params.type}` : ''}`}
+                  label={ind.name}
+                  active={false}
+                />
+              ))}
+            </>
+          )}
         </div>
 
         {opportunities.length === 0 ? (
