@@ -83,6 +83,7 @@ const FAQS: Faq[] = [
       {
         type: 'list',
         items: [
+          'NYDA Grant Programme - does not require CIPC registration. Youth-owned informal businesses can apply with proof of trading such as invoices, receipts, or supplier letters',
           'Cooperative Incentive Scheme (CIS) - open to formally registered co-operatives, which have a lower barrier than CIPC company registration and require a minimum of five members',
           'TREP sub-sector programmes (bakeries, spaza shops, butcheries, beauty, clothing, autobody) - formal CIPC registration is not strictly required for all sub-programmes',
           'Some provincial EDTECH and township enterprise funds that use proof of trading instead of CIPC',
@@ -110,7 +111,7 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'Most South African entrepreneurs never find out why they were rejected. The funder sends a form email and the applicant assumes the opportunity was a scam or that the process was corrupt. Sometimes that is true. Often it is not. The Finfind 2025 SA MSME Access to Finance Report documented the most common barriers facing South African small businesses - and the same patterns appear repeatedly across thousands of applications.',
+          'Most South African entrepreneurs never find out why they were rejected. The funder sends a form email and the applicant assumes the opportunity was a scam or that the process was corrupt. Sometimes that is true. Often it is not. The Finfind 2025 SA MSME Access to Finance Report found that 75% of South African MSMEs do not use any accounting system - and the same patterns appear repeatedly across thousands of applications.',
       },
       { type: 'heading', content: 'The five most common rejection reasons' },
       {
@@ -124,12 +125,12 @@ const FAQS: Faq[] = [
           {
             number: '02',
             title: 'No financial records',
-            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A basic bookkeeping app like TurboCash (free, open-source) or Zoho Books changes this. The Finfind 2025 report found that poor financial record-keeping is one of the top barriers to funding access for South African MSMEs.',
+            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A low-cost bookkeeping app like Wave (free) or TurboCash changes this. The Finfind 2025 report found that 75% of South African MSMEs do not use any accounting system, making this the single most widespread barrier to funding access.',
           },
           {
             number: '03',
             title: 'Poor or no credit profile',
-            body: 'For loan products, your personal credit score is often assessed alongside the business. Unpaid debt, judgements, and defaults flag you as high risk. Check your credit report on TransUnion or Experian before applying - both offer a free annual check as required by the National Credit Act.',
+            body: 'For loan products, your personal credit score is often assessed alongside the business. Unpaid debt, judgements, and defaults flag you as high risk. The National Credit Act entitles you to one free credit report per year from each registered credit bureau. Check yours on TransUnion (transunion.co.za) or Experian via Up (up.experian.co.za) before applying.',
           },
           {
             number: '04',
@@ -139,7 +140,7 @@ const FAQS: Faq[] = [
           {
             number: '05',
             title: 'Wrong product for your stage',
-            body: 'Applying for a R5m IDC growth loan when you are pre-revenue is not just a rejection - it puts a flag on your name. Match the product to your stage. Seed-stage businesses need seed-stage funding: grants, microfinance, and incubator support.',
+            body: 'Applying for an IDC growth loan when you are pre-revenue is not just a rejection - it puts a flag on your name. IDC minimum funding is R1 million and is for established, revenue-generating businesses only. Match the product to your stage. Seed-stage businesses need seed-stage funding: grants, microfinance, and incubator support.',
           },
         ],
       },
@@ -165,7 +166,7 @@ const FAQS: Faq[] = [
         items: [
           { name: 'CIPC registration certificate', note: 'Download from the CIPC customer portal. Keep the PDF, not a screenshot.' },
           { name: 'SARS tax clearance / compliance certificate', note: 'Obtain via eFiling. Valid for 12 months. Apply before you start the funding search.' },
-          { name: 'B-BBEE affidavit or certificate', note: 'Under R10m turnover: a sworn commissioner-of-oaths affidavit is sufficient. Free to do.' },
+          { name: 'B-BBEE affidavit or certificate', note: 'Under R10m annual turnover (Generic Codes EME threshold): a sworn commissioner-of-oaths affidavit is sufficient and free to do. Note: the Tourism sector has a lower threshold of R5m - tourism businesses above R5m need a SANAS-accredited certificate.' },
           { name: 'Business bank account statements', note: 'Usually 3 to 6 months. Must be a business account, not a personal account.' },
           { name: 'Bank confirmation letter', note: 'A letter from your bank confirming your account details. Request at your branch or online banking.' },
           { name: 'Certified ID copies of all directors/owners', note: 'Certified within 3 months. Certify at a police station or post office for free.' },
@@ -214,9 +215,10 @@ const FAQS: Faq[] = [
               'The most competitive type - often hundreds of applicants per slot',
               'Tied to a specific approved use: equipment, training, or market access - not salaries or rent',
               'Comes with reporting obligations. Funders will check you spent it correctly',
+              'Note: BBSDP requires VAT registration. Businesses below the compulsory VAT threshold (R1m turnover) must voluntarily register for VAT before applying',
               'A grant award on your record makes follow-on loans easier to get',
             ],
-            onVula: 'BBSDP, DTIC Black Industrialists Scheme (BIS), SEDA Product Testing Grant',
+            onVula: 'BBSDP (max R1m cost-sharing grant), DTIC Black Industrialists Scheme (BIS), SEDA Product Testing Grant',
           },
           {
             label: 'Loan',
@@ -303,7 +305,7 @@ const FAQS: Faq[] = [
           { funder: 'SEFA direct lending', example: 'SEFA direct or via intermediaries', range: '4 - 10 weeks', amount: 'R50k - R15m', note: 'Government DFI, more accessible than banks but requires CIPC registration and trading history' },
           { funder: 'Corporate ESD / grants', example: 'Sanlam, Old Mutual, Massmart', range: '6 - 16 weeks', amount: 'R50k - R2m', note: 'Competitive intake rounds, often annual or bi-annual' },
           { funder: 'Government grants (DSBD, BBSDP)', example: 'BBSDP, SEDA support, DSBD programmes', range: '3 - 9 months', amount: 'R30k - R5m', note: 'Cost-sharing structure, extensive compliance, high competition' },
-          { funder: 'DFI growth capital', example: 'IDC, NEF, DBSA', range: '6 - 18 months', amount: 'R1m - R500m+', note: 'For established, revenue-generating businesses only' },
+          { funder: 'DFI growth capital', example: 'IDC, NEF, DBSA', range: '6 - 18 months', amount: 'R1m - R500m+', note: 'For established, revenue-generating businesses only. IDC minimum funding is R1 million.' },
         ],
       },
       { type: 'heading', content: 'Practical advice' },
