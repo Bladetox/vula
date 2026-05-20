@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { href: '/directory', label: 'Directory' },
   { href: '/faq',       label: 'FAQ' },
   { href: '/register',  label: 'Get registered' },
-  { href: '/submit',    label: 'Submit a listing' },
+  { href: '/community', label: 'Community' },
 ]
 
 export function Nav() {
