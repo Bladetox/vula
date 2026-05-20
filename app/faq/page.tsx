@@ -67,7 +67,7 @@ const FAQS: Faq[] = [
     tagColor: { bg: '#fef5e0', border: '#f0d89a', text: '#92600a' },
     question: 'Can I apply for funding if my business is not registered?',
     short:
-      'Yes. A meaningful number of funding programmes in South Africa are open to informal and unregistered businesses. Registration unlocks more, but it is not the starting requirement everywhere.',
+      'Yes. A number of funding programmes in South Africa are open to informal and unregistered businesses. Registration unlocks significantly more, but it is not the starting requirement everywhere.',
     answer: [
       {
         type: 'p',
@@ -77,24 +77,23 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'Informal businesses - street traders, home-based operations, spaza shops, and sole traders without formal registration - can access programmes from government departments, community development organisations, and some banks. These programmes are specifically designed for people who cannot yet register because they lack the funds, the address, or the documentation to do so.',
+          'Informal businesses - street traders, home-based operations, spaza shops, and sole traders without formal registration - can access certain programmes from government departments, community development organisations, and some banks. These programmes are specifically designed for people who cannot yet register because they lack the funds, the address, or the documentation to do so.',
       },
       { type: 'heading', content: 'What informal businesses can access' },
       {
         type: 'list',
         items: [
-          'DSBD Asset Assist Programme - provides productive assets to informal traders, no CIPC required',
-          'Cooperative Incentive Scheme - open to registered cooperatives, which have a lower barrier than company registration',
+          'Cooperative Incentive Scheme (CIS) - open to formally registered co-operatives, which have a lower barrier than CIPC company registration and require a minimum of five members',
+          'TREP sub-sector programmes (bakeries, spaza shops, butcheries, beauty, clothing, autobody) - formal CIPC registration is not strictly required for all sub-programmes',
           'Some provincial EDTECH and township enterprise funds that use proof of trading instead of CIPC',
-          'Microfinance products from institutions like Small Enterprise Finance Agency (SEFA) that accept informal proof of business',
-          'NGO and foundation funding (Columba Leadership, Tshikululu) that target pre-formal businesses',
+          'Microfinance products through SEFA-accredited microfinance intermediaries (MFIs) - these intermediaries can reach informal businesses that SEFA itself cannot lend to directly',
         ],
       },
       { type: 'heading', content: 'Why registration still matters' },
       {
         type: 'p',
         content:
-          'The honest answer is that formalising your business opens access to roughly three times more opportunities. Banks, DFIs like IDC and DBSA, and most corporate ESD programmes require a CIPC number, a business bank account, and a tax clearance certificate before they will even open your application. If your goal is to grow, formalisation is worth the investment of time.',
+          'The honest answer is that formalising your business opens access to significantly more funding opportunities. Banks, DFIs like IDC and DBSA, and most corporate ESD programmes require a CIPC number, a business bank account, and a tax clearance certificate before they will even open your application. If your goal is to grow, formalisation is worth the investment of time.',
       },
       { type: 'cta', label: 'See funding that requires no registration', href: '/find?type=informal' },
       { type: 'cta', label: 'How to formalise your business', href: '/register', secondary: true },
@@ -111,7 +110,7 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'Most South African entrepreneurs never find out why they were rejected. The funder sends a form email and the applicant assumes the opportunity was a scam or that the process was corrupt. Sometimes that is true. Often it is not. The Finfind 2025 SA MSME Access to Finance Report analysed thousands of rejected applications and found five causes that account for over 80% of declines.',
+          'Most South African entrepreneurs never find out why they were rejected. The funder sends a form email and the applicant assumes the opportunity was a scam or that the process was corrupt. Sometimes that is true. Often it is not. The Finfind 2025 SA MSME Access to Finance Report documented the most common barriers facing South African small businesses - and the same patterns appear repeatedly across thousands of applications.',
       },
       { type: 'heading', content: 'The five most common rejection reasons' },
       {
@@ -125,12 +124,12 @@ const FAQS: Faq[] = [
           {
             number: '02',
             title: 'No financial records',
-            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A basic bookkeeping app like Wave (free) or Zoho Books changes this. The Finfind report found 75% of MSMEs have no accounting system at all.',
+            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A basic bookkeeping app like Wave (free) or Zoho Books changes this. The Finfind 2025 report found that poor financial record-keeping is one of the top barriers to funding access for South African MSMEs.',
           },
           {
             number: '03',
             title: 'Poor or no credit profile',
-            body: 'For loan products, your personal credit score is often assessed alongside the business. Unpaid debt, judgements, and defaults flag you as high risk. Check your credit report on TransUnion or Experian before applying - both offer a free annual check.',
+            body: 'For loan products, your personal credit score is often assessed alongside the business. Unpaid debt, judgements, and defaults flag you as high risk. Check your credit report on TransUnion or Experian before applying - both offer a free annual check as required by the National Credit Act.',
           },
           {
             number: '04',
@@ -158,7 +157,7 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'Document requirements feel overwhelming because each funder lists them differently. But underneath the different labels, 90% of programmes ask for the same set of things. Here is the universal pack - the documents that appear on almost every checklist in South Africa.',
+          'Document requirements feel overwhelming because each funder lists them differently. But underneath the different labels, the vast majority of programmes ask for the same set of things. Here is the universal pack - the documents that appear on almost every checklist in South Africa.',
       },
       { type: 'heading', content: 'The core document pack' },
       {
@@ -195,7 +194,7 @@ const FAQS: Faq[] = [
     tagColor: { bg: '#fef5e0', border: '#f0d89a', text: '#92600a' },
     question: 'What is the difference between a grant and a loan?',
     short:
-      'A grant is money you do not pay back. A loan is money you do. Revenue-based finance sits in between - repayment is automatic and tied to your daily sales. Knowing which one fits your situation determines which programmes are worth your time.',
+      'A grant is money you do not pay back. A loan is money you do. Revenue-based finance sits between them - repayment is automatic and tied to your daily sales. Knowing which one fits your situation determines which programmes are worth your time.',
     answer: [
       {
         type: 'p',
@@ -213,11 +212,11 @@ const FAQS: Faq[] = [
               'Money from government, a development agency, or a corporate ESD programme. You keep it. No interest, no monthly instalments.',
             realities: [
               'The most competitive type - often hundreds of applicants per slot',
-              'Usually tied to a specific use: equipment, training, or market access - not salaries or rent',
+              'Tied to a specific approved use: equipment, training, or market access - not salaries or rent',
               'Comes with reporting obligations. Funders will check you spent it correctly',
               'A grant award on your record makes follow-on loans easier to get',
             ],
-            onVula: 'BBSDP, IDC Black Industrialists Grant, SEDA Product Testing Grant',
+            onVula: 'BBSDP, DTIC Black Industrialists Scheme (BIS), SEDA Product Testing Grant',
           },
           {
             label: 'Loan',
@@ -239,8 +238,8 @@ const FAQS: Faq[] = [
               'A fintech advance repaid as a percentage of your daily card or bank turnover. No fixed monthly instalment - you pay back more when trading is strong, less when it is slow.',
             realities: [
               'The fastest to access - decisions in 24 to 48 hours, no business plan required',
-              'Qualification is based on your actual card or bank transaction history, not credit score alone',
-              'Only available to businesses already processing payments - Yoco merchants, card machine users, online sellers',
+              'Qualification is based on your card or bank transaction history, not credit score alone',
+              'Available to businesses with card processing history (Yoco, card machine users) or consistent bank account turnover (Lula)',
               'Factor fees (not interest rates) make the cost harder to compare - calculate the total repayment amount, not the percentage',
             ],
             onVula: 'Yoco Capital, Lula, Merchant Capital, Retail Capital, Peach Payments Capital',
@@ -276,7 +275,7 @@ const FAQS: Faq[] = [
       {
         type: 'p',
         content:
-          'A common mistake is to chase grants because repayment feels scary. But grants are the hardest to get. If your business is trading and can service debt, a loan or revenue-based advance may be faster, more predictable, and ultimately more useful. Use grants to fund fixed costs and capacity building; use loans and advances to fund working capital and growth.',
+          'A common mistake is to chase grants because repayment feels scary. But grants are the hardest to get and are restricted to approved uses like equipment, training, and capacity building - they cannot cover rent or salaries. If your business is trading and can service debt, a loan or revenue-based advance may be faster, more predictable, and ultimately more useful for day-to-day working capital.',
       },
       { type: 'cta', label: 'Browse by funding type', href: '/directory' },
     ],
@@ -301,9 +300,9 @@ const FAQS: Faq[] = [
           { funder: 'Revenue-based (Yoco, Lula, Merchant Capital)', example: 'Yoco Capital, Lula, Peach Payments Capital', range: '24 hrs - 3 days', amount: 'R5k - R5m', note: 'Turnover-linked, automated decisions, factor fee pricing - fastest capital available' },
           { funder: 'Fintech / alternative lenders', example: 'Retail Capital, other alt lenders', range: '24 hrs - 7 days', amount: 'R10k - R5m', note: 'Revenue-based, fast decisions, higher cost of capital' },
           { funder: 'Commercial banks', example: 'Absa, Standard Bank, FNB, Nedbank', range: '1 - 6 weeks', amount: 'R50k - R50m', note: 'Requires full document pack, credit assessment, often collateral' },
-          { funder: 'SEFA microfinance', example: 'SEFA direct or intermediaries', range: '4 - 10 weeks', amount: 'R10k - R3m', note: 'Government DFI, more accessible but slower than banks' },
+          { funder: 'SEFA direct lending', example: 'SEFA direct or via intermediaries', range: '4 - 10 weeks', amount: 'R50k - R15m', note: 'Government DFI, more accessible than banks but requires CIPC registration and trading history' },
           { funder: 'Corporate ESD / grants', example: 'Sanlam, Old Mutual, Massmart', range: '6 - 16 weeks', amount: 'R50k - R2m', note: 'Competitive intake rounds, often annual or bi-annual' },
-          { funder: 'Government grants (DSBD, BBSDP)', example: 'BBSDP, TSIBA, Seda support', range: '3 - 9 months', amount: 'R30k - R5m', note: 'Cost-sharing structure, extensive compliance, high competition' },
+          { funder: 'Government grants (DSBD, BBSDP)', example: 'BBSDP, SEDA support, DSBD programmes', range: '3 - 9 months', amount: 'R30k - R5m', note: 'Cost-sharing structure, extensive compliance, high competition' },
           { funder: 'DFI growth capital', example: 'IDC, NEF, DBSA', range: '6 - 18 months', amount: 'R1m - R500m+', note: 'For established, revenue-generating businesses only' },
         ],
       },
