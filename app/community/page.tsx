@@ -25,7 +25,6 @@ type Section = 'flag' | 'submit'
 export default function CommunityPage() {
   const [activeSection, setActiveSection] = useState<Section>('flag')
 
-  // Flag form state
   const [flagForm, setFlagForm] = useState({
     listing_title: '',
     flag_type: '',
@@ -34,7 +33,6 @@ export default function CommunityPage() {
   })
   const [flagStatus, setFlagStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
-  // Submit form state
   const [submitForm, setSubmitForm] = useState({
     title: '',
     funder: '',
@@ -154,14 +152,51 @@ export default function CommunityPage() {
               fontWeight: 800,
               letterSpacing: '-0.03em',
               color: 'var(--vula-ink)',
-              marginBottom: '0.75rem',
+              marginBottom: '1.5rem',
             }}
           >
             Community
           </h1>
-          <p style={{ fontSize: '1rem', color: 'var(--vula-muted)', lineHeight: 1.65 }}>
-            Vula is maintained by a small team and a growing community of South African founders. Every listing has been researched, but funding programmes change. Amounts shift. Deadlines close. What was accurate last month may not be accurate today.
-          </p>
+
+          {/* Founder card */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '1.25rem',
+              alignItems: 'flex-start',
+              background: 'var(--vula-surface)',
+              border: '1px solid var(--vula-border)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '1.25rem',
+              marginBottom: '1.5rem',
+            }}
+          >
+            <img
+              src="https://iili.io/C9Ktrhu.jpg"
+              alt="Arshad Segal"
+              width={64}
+              height={64}
+              style={{
+                flexShrink: 0,
+                width: '4rem',
+                height: '4rem',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '2px solid var(--vula-green-light)',
+              }}
+            />
+            <div>
+              <p style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--vula-ink)', marginBottom: '0.2rem' }}>
+                Arshad Segal
+              </p>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--vula-green)', fontWeight: 500, marginBottom: '0.75rem' }}>
+                Founder, Vula
+              </p>
+              <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.7 }}>
+                Vula is a one-person project, built to make South African business funding easier to find and understand. Every listing has been researched by hand. Funding programmes change, amounts shift, and what was accurate last month may not be accurate today. Your input in keeping this directory honest is genuinely appreciated.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
