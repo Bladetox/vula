@@ -124,7 +124,7 @@ const FAQS: Faq[] = [
           {
             number: '02',
             title: 'No financial records',
-            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A basic bookkeeping app like Wave (free) or Zoho Books changes this. The Finfind 2025 report found that poor financial record-keeping is one of the top barriers to funding access for South African MSMEs.',
+            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A basic bookkeeping app like TurboCash (free, open-source) or Zoho Books changes this. The Finfind 2025 report found that poor financial record-keeping is one of the top barriers to funding access for South African MSMEs.',
           },
           {
             number: '03',
