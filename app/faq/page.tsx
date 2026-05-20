@@ -125,7 +125,7 @@ const FAQS: Faq[] = [
           {
             number: '02',
             title: 'No financial records',
-            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. A low-cost bookkeeping app like Wave (free) or TurboCash changes this. The Finfind 2025 report found that 75% of South African MSMEs do not use any accounting system, making this the single most widespread barrier to funding access.',
+            body: 'If you cannot show income and expenses - even in a simple spreadsheet - funders cannot assess your ability to repay or your need. Zoho Books has a free plan for South African small businesses and is VAT-compliant for SARS. TurboCash is a free-tier desktop option built in South Africa. The Finfind 2025 report found that 75% of South African MSMEs do not use any accounting system, making this the single most widespread barrier to funding access.',
           },
           {
             number: '03',
