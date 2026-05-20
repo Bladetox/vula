@@ -174,15 +174,16 @@ export default function CommunityPage() {
             <img
               src="https://iili.io/C9Ktrhu.jpg"
               alt="Arshad Segal"
-              width={64}
-              height={64}
+              width={112}
+              height={112}
               style={{
                 flexShrink: 0,
-                width: '4rem',
-                height: '4rem',
+                width: '7rem',
+                height: '7rem',
                 borderRadius: '50%',
                 objectFit: 'cover',
-                border: '2px solid var(--vula-green-light)',
+                border: '2px solid var(--vula-border)',
+                filter: 'grayscale(1)',
               }}
             />
             <div>
@@ -193,7 +194,7 @@ export default function CommunityPage() {
                 Founder, Vula
               </p>
               <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.7 }}>
-                Vula is a one-person project, built to make South African business funding easier to find and understand. Every listing has been researched by hand. Funding programmes change, amounts shift, and what was accurate last month may not be accurate today. Your input in keeping this directory honest is genuinely appreciated.
+                Vula is a one-person project, built to make South African business funding easier to find and understand. Every listing has been researched by hand. Funding programmes change, amounts shift, and what was accurate last month may not be accurate today. Should you come across any information that has changed please flag for review. Your input in keeping this directory accurate is genuinely appreciated.
               </p>
             </div>
           </div>
