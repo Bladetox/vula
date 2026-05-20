@@ -330,7 +330,7 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                   )}
                 </>
               ) : (
-                /* No self-service portal — applications go through DSBD/SEFA offices */
+                /* No self-service portal — applications go through the funder's offices directly */
                 <div
                   style={{
                     background: 'var(--vula-bg)',
@@ -380,14 +380,16 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                           lineHeight: 1.55,
                         }}
                       >
-                        This programme is applied for in person at a SEFA or DSBD office. Call the DSBD helpline or visit your nearest SEFA branch to start your application.
+                        This programme does not have an online application portal. Visit the official source below for contact details, office locations, and how to start your application.
                       </p>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  {opp.source_url && (
                     <a
-                      href="tel:0860103703"
+                      href={opp.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       style={{
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -402,37 +404,12 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                         textDecoration: 'none',
                       }}
                     >
-                      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                      Visit official source
+                      <svg width="11" height="11" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                        <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      0860 103 703
                     </a>
-                    {opp.source_url && (
-                      <a
-                        href={opp.source_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.375rem',
-                          fontSize: '0.8125rem',
-                          fontWeight: 500,
-                          color: 'var(--vula-muted)',
-                          background: 'var(--vula-surface-2)',
-                          border: '1px solid var(--vula-border)',
-                          padding: '0.5rem 1rem',
-                          borderRadius: 'var(--radius)',
-                          textDecoration: 'none',
-                        }}
-                      >
-                        More info
-                        <svg width="11" height="11" fill="none" viewBox="0 0 12 12" aria-hidden="true">
-                          <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </a>
-                    )}
-                  </div>
+                  )}
                 </div>
               )}
             </div>
