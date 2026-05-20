@@ -11,6 +11,11 @@ const FUNDING_TYPE_FILTERS = [
   { value: 'blended',        label: 'Blended finance' },
 ]
 
+// These funding types are sector-agnostic — any business in any industry can apply.
+// When one of these is active we skip the industry ID join so results are never
+// incorrectly zeroed out by missing opportunity_industries rows.
+const CROSS_SECTOR_TYPES = new Set(['revenue-based', 'equity'])
+
 export default async function DirectoryPage({
   searchParams,
 }: {
@@ -19,8 +24,12 @@ export default async function DirectoryPage({
   const params = await searchParams
   const supabase = await createClient()
 
+  const isCrossSector = params.type ? CROSS_SECTOR_TYPES.has(params.type) : false
+
   let opportunityIds: string[] | null = null
-  if (params.industry) {
+
+  // Only resolve industry filter when the type is NOT cross-sector
+  if (params.industry && !isCrossSector) {
     const { data: indRaw } = await supabase
       .from('industries')
       .select('id')
@@ -165,7 +174,7 @@ function renderPage(
 
         {/* Industry filter
             - No active industry: show all pills
-            - Active industry: show only a clear pill + the selected pill
+            - Active industry: collapse to clear pill + selected pill only
         */}
         <div
           style={{
@@ -181,7 +190,6 @@ function renderPage(
         >
           {params.industry && activeIndustry ? (
             <>
-              {/* Clear pill */}
               <Link
                 href={clearIndustryHref}
                 aria-label="Clear industry filter"
@@ -204,7 +212,6 @@ function renderPage(
                 </svg>
                 All industries
               </Link>
-              {/* Active industry pill only */}
               <FilterChip
                 href={`/directory?industry=${activeIndustry.slug}${params.type ? `&type=${params.type}` : ''}`}
                 label={activeIndustry.name}
