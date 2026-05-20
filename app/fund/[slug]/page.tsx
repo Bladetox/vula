@@ -43,9 +43,7 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
 
   const status = STATUS_CONFIG[opp.status] ?? STATUS_CONFIG['open']
 
-  // apply_url = null means no self-service portal exists — show contact block instead
   const hasApplyUrl = !!opp.apply_url
-  // Show a secondary "view source" link only when source differs from apply
   const showSourceLink = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
 
   return (
@@ -274,7 +272,14 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
               {!opp.requires_registration && <Badge label="Informal eligible" color="gold" />}
             </div>
 
-            {/* CTAs — two variants: direct apply URL vs. no portal (contact required) */}
+            {/* NextSlot card — shown between context and CTA for beauty/personal care listings */}
+            {opp.show_nextslot_card && (
+              <div style={{ marginBottom: '1.75rem' }}>
+                <NextSlotCard />
+              </div>
+            )}
+
+            {/* CTAs */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
               {hasApplyUrl ? (
                 <>
@@ -330,7 +335,6 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                   )}
                 </>
               ) : (
-                /* No self-service portal — applications go through the funder's offices directly */
                 <div
                   style={{
                     background: 'var(--vula-bg)',
@@ -428,9 +432,6 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
             </p>
           </div>
         </article>
-
-        {/* NextSlot partnership card — only shown for relevant service business opportunities */}
-        {opp.show_nextslot_card && <NextSlotCard />}
 
       </section>
     </main>
