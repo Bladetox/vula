@@ -158,17 +158,19 @@ export default function CommunityPage() {
             Community
           </h1>
 
-          {/* Founder card */}
+          {/* Founder card — stacked layout */}
           <div
             style={{
               display: 'flex',
-              gap: '1.25rem',
-              alignItems: 'flex-start',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
               background: 'var(--vula-surface)',
               border: '1px solid var(--vula-border)',
               borderRadius: 'var(--radius-xl)',
-              padding: '1.25rem',
+              padding: 'clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 4vw, 2.5rem)',
               marginBottom: '1.5rem',
+              gap: '0',
             }}
           >
             <img
@@ -177,26 +179,41 @@ export default function CommunityPage() {
               width={112}
               height={112}
               style={{
-                flexShrink: 0,
                 width: '7rem',
                 height: '7rem',
                 borderRadius: '50%',
                 objectFit: 'cover',
                 border: '2px solid var(--vula-border)',
                 filter: 'grayscale(1)',
+                marginBottom: '1rem',
               }}
             />
-            <div>
-              <p style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--vula-ink)', marginBottom: '0.2rem' }}>
-                Arshad Segal
-              </p>
-              <p style={{ fontSize: '0.8125rem', color: 'var(--vula-green)', fontWeight: 500, marginBottom: '0.75rem' }}>
-                Founder, Vula
-              </p>
-              <p style={{ fontSize: '0.9rem', color: 'var(--vula-muted)', lineHeight: 1.7 }}>
-                Vula is a one-person project, built to make South African business funding easier to find and understand. Every listing has been researched by hand. Funding programmes change, amounts shift, and what was accurate last month may not be accurate today. Should you come across any information that has changed please flag for review. Your input in keeping this directory accurate is genuinely appreciated.
-              </p>
-            </div>
+            <p style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--vula-ink)', marginBottom: '0.2rem' }}>
+              Arshad Segal
+            </p>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--vula-green)', fontWeight: 500, marginBottom: '1.125rem' }}>
+              Founder, Vula
+            </p>
+            <div
+              style={{
+                width: '2rem',
+                height: '1px',
+                background: 'var(--vula-border)',
+                marginBottom: '1.125rem',
+              }}
+              aria-hidden="true"
+            />
+            <p
+              style={{
+                fontSize: '0.9rem',
+                color: 'var(--vula-muted)',
+                lineHeight: 1.75,
+                textAlign: 'left',
+                maxWidth: '28rem',
+              }}
+            >
+              Vula is a one-person project, built to make South African business funding easier to find and understand. Every listing has been researched by hand. Funding programmes change, amounts shift, and what was accurate last month may not be accurate today. Should you come across any information that has changed please flag for review. Your input in keeping this directory accurate is genuinely appreciated.
+            </p>
           </div>
         </div>
       </section>
