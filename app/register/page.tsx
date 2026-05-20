@@ -13,7 +13,7 @@ const STEPS = [
     number: 2,
     title: 'Register with SARS',
     description:
-      'Once CIPC-registered, register for tax with SARS. You will need an income tax number and, once turnover exceeds the threshold, VAT registration.',
+      'Once CIPC-registered, register for income tax with SARS via eFiling. VAT registration only becomes compulsory once your annual turnover exceeds R2.3 million (threshold updated April 2026).',
     action: 'Register at sars.gov.za',
     href: 'https://www.sars.gov.za/businesses-and-employers/register-a-business/',
   },
@@ -21,7 +21,7 @@ const STEPS = [
     number: 3,
     title: 'Open a business bank account',
     description:
-      'Most funding applications require a dedicated business bank account. Several South African banks offer low-cost options for small businesses — FNB Easy Business, Nedbank SimplyBiz, and Standard Bank MyMoBiz are popular starting points.',
+      'Most funding applications require a dedicated business bank account. Several South African banks offer low-cost options for small businesses - FNB Easy Business, Nedbank Business Essentials, and Standard Bank MyMoBiz are popular starting points.',
     action: null,
     href: null,
   },
@@ -29,7 +29,7 @@ const STEPS = [
     number: 4,
     title: 'Get a B-BBEE affidavit or certificate',
     description:
-      'Businesses with annual turnover under R10 million can use a sworn affidavit. Larger businesses need a verified B-BBEE certificate from a SANAS-accredited verification agency.',
+      'Businesses with annual turnover under R10 million can use a sworn affidavit signed before a commissioner of oaths. Larger businesses need a verified B-BBEE certificate from a SANAS-accredited verification agency.',
     action: 'Learn about B-BBEE at thedtic.gov.za',
     href: 'https://www.thedtic.gov.za/financial-and-non-financial-support/bee/',
   },
