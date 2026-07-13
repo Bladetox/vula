@@ -37,8 +37,8 @@ WHERE id = '3d0b2c31-2341-4626-b496-baf1eea3a8f7';
 -- 5. BBSDP — VAT threshold claim (R2.3m from April 2026) is unverified against SARS
 UPDATE funding_opportunities
 SET
-  data_verified     = false,
-  updated_at        = now()
+  data_verified = false,
+  updated_at    = now()
 WHERE id = '09ffa598-b4c6-43f6-9dab-8c8fcb52dad8';
 
 -- 6. Imbali For Her — sourced from a news blog, not an official SEDFA page
@@ -61,11 +61,11 @@ UPDATE funding_opportunities
 SET
   data_verified = false,
   updated_at    = now()
-WHERE id = 'e9ee4c6f-44db-4c9c-9d4b-5b7de4f58a3a';
+WHERE id = 'e9ee4c6f-c774-4349-811a-6037470aaf11';
 
 -- 9. Peach Payments Capital — R2m cap unverified on official Peach Payments site
 UPDATE funding_opportunities
 SET
   data_verified = false,
   updated_at    = now()
-WHERE id = 'c1d653fe-3b4a-4c2d-8e1a-9f2b3c4d5e6f';
+WHERE id = 'c1d653fe-5e0c-419e-a445-880aa72b65e8';
