@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import type { FundingOpportunity } from '@/lib/types'
 import NextSlotCard from '@/components/NextSlotCard'
 import YocoWaitlistBanner from '@/components/YocoWaitlistBanner'
+import UnverifiedBanner from '@/components/UnverifiedBanner'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug: id } = await params
@@ -30,7 +31,6 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }
   closed:   { label: 'Closed',   bg: '#f3f3f2',                   color: 'var(--vula-faint)' },
 }
 
-// Yoco Capital opportunity ID — used to conditionally render the waitlist banner
 const YOCO_CAPITAL_ID = '47447deb-d748-446b-8ec0-94f7f78347e4'
 
 export default async function FundPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -50,6 +50,8 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
   const hasApplyUrl = !!opp.apply_url
   const showSourceLink = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
   const isYocoCapital = id === YOCO_CAPITAL_ID
+  // Show unverified banner when data_verified column exists and is false
+  const isUnverified = (opp as FundingOpportunity & { data_verified?: boolean }).data_verified === false
 
   return (
     <main>
@@ -80,8 +82,9 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
           Back to directory
         </Link>
 
-        {/* Yoco Capital waitlist banner — shown before the card */}
+        {/* Banners — shown before the card */}
         {isYocoCapital && <YocoWaitlistBanner />}
+        {isUnverified && <UnverifiedBanner sourceUrl={opp.source_url} />}
 
         {/* Card */}
         <article
@@ -280,7 +283,7 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
               {!opp.requires_registration && <Badge label="Informal eligible" color="gold" />}
             </div>
 
-            {/* NextSlot card — shown between context and CTA for beauty/personal care listings */}
+            {/* NextSlot card */}
             {opp.show_nextslot_card && (
               <div style={{ marginBottom: '1.75rem' }}>
                 <NextSlotCard />
