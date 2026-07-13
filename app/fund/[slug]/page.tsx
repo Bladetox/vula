@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { FundingOpportunity } from '@/lib/types'
 import NextSlotCard from '@/components/NextSlotCard'
+import YocoWaitlistBanner from '@/components/YocoWaitlistBanner'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug: id } = await params
@@ -29,6 +30,9 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }
   closed:   { label: 'Closed',   bg: '#f3f3f2',                   color: 'var(--vula-faint)' },
 }
 
+// Yoco Capital opportunity ID — used to conditionally render the waitlist banner
+const YOCO_CAPITAL_ID = '47447deb-d748-446b-8ec0-94f7f78347e4'
+
 export default async function FundPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug: id } = await params
   const supabase = await createClient()
@@ -45,6 +49,7 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
 
   const hasApplyUrl = !!opp.apply_url
   const showSourceLink = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
+  const isYocoCapital = id === YOCO_CAPITAL_ID
 
   return (
     <main>
@@ -74,6 +79,9 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
           </svg>
           Back to directory
         </Link>
+
+        {/* Yoco Capital waitlist banner — shown before the card */}
+        {isYocoCapital && <YocoWaitlistBanner />}
 
         {/* Card */}
         <article
