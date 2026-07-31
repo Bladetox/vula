@@ -24,14 +24,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
-  open:     { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
-  ongoing:  { label: 'Open',     bg: 'var(--vula-green-subtle)',  color: 'var(--vula-green)' },
-  seasonal: { label: 'Seasonal', bg: '#fef5e0',                   color: '#92600a' },
-  pilot:    { label: 'Pilot',    bg: '#f0edff',                   color: '#5b21b6' },
-  closed:   { label: 'Closed',   bg: '#f3f3f2',                   color: 'var(--vula-faint)' },
+  open:     { label: 'Open',           bg: 'var(--vula-green-subtle)', color: 'var(--vula-green)' },
+  ongoing:  { label: 'Rolling intake', bg: 'var(--vula-green-subtle)', color: 'var(--vula-green)' },
+  seasonal: { label: 'Seasonal',       bg: '#fef5e0',                  color: '#92600a' },
+  pilot:    { label: 'Pilot',          bg: '#f0edff',                  color: '#5b21b6' },
+  closed:   { label: 'Closed',         bg: '#f3f3f2',                  color: 'var(--vula-faint)' },
 }
 
 const YOCO_CAPITAL_ID = '47447deb-d748-446b-8ec0-94f7f78347e4'
+
+function getDaysLeft(deadline: string): number {
+  const now = new Date()
+  now.setHours(0, 0, 0, 0)
+  const end = new Date(deadline)
+  end.setHours(0, 0, 0, 0)
+  return Math.round((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+}
 
 export default async function FundPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug: id } = await params
@@ -46,12 +54,37 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
   if (!opp) notFound()
 
   const status = STATUS_CONFIG[opp.status] ?? STATUS_CONFIG['open']
+  const isClosed = opp.status === 'closed'
 
   const hasApplyUrl = !!opp.apply_url
   const showSourceLink = opp.source_url && opp.apply_url && opp.source_url !== opp.apply_url
   const isYocoCapital = id === YOCO_CAPITAL_ID
-  // Show unverified banner when data_verified column exists and is false
   const isUnverified = (opp as FundingOpportunity & { data_verified?: boolean }).data_verified === false
+
+  // Deadline display for header
+  const daysLeft = opp.deadline ? getDaysLeft(opp.deadline) : null
+  const deadlineLabel =
+    daysLeft === null ? null
+    : daysLeft < 0    ? 'Deadline passed'
+    : daysLeft === 0  ? 'Closes today'
+    : daysLeft === 1  ? '1 day left'
+    : `${daysLeft} days left`
+  const deadlineUrgent = daysLeft !== null && daysLeft >= 0 && daysLeft <= 7
+  const deadlineColor = daysLeft !== null && daysLeft >= 0
+    ? daysLeft <= 7  ? '#c0392b'
+    : daysLeft <= 21 ? '#92600a'
+    : 'var(--vula-green)'
+    : 'var(--vula-faint)'
+  const deadlineBg = daysLeft !== null && daysLeft >= 0
+    ? daysLeft <= 7  ? '#fff1f0'
+    : daysLeft <= 21 ? '#fff8ed'
+    : 'var(--vula-green-subtle)'
+    : '#f3f3f2'
+  const deadlineBorder = daysLeft !== null && daysLeft >= 0
+    ? daysLeft <= 7  ? '#fdc5c0'
+    : daysLeft <= 21 ? '#f5dcaa'
+    : 'var(--vula-green-light)'
+    : 'var(--vula-border)'
 
   return (
     <main>
@@ -82,11 +115,10 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
           Back to directory
         </Link>
 
-        {/* Banners — shown before the card */}
+        {/* Banners */}
         {isYocoCapital && <YocoWaitlistBanner />}
         {isUnverified && <UnverifiedBanner sourceUrl={opp.source_url} />}
 
-        {/* Card */}
         <article
           style={{
             background: 'var(--vula-surface)',
@@ -96,46 +128,76 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
             boxShadow: 'var(--shadow-md)',
           }}
         >
-          {/* Header band */}
+          {/* Header band: funder, status, deadline, title, CTA */}
           <div
             style={{
               padding: '1.75rem 1.75rem 1.5rem',
               borderBottom: '1px solid var(--vula-border)',
             }}
           >
+            {/* Status + deadline row */}
             <div
               style={{
                 display: 'flex',
-                alignItems: 'flex-start',
+                alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: '0.75rem',
-                marginBottom: '0.5rem',
+                marginBottom: '0.625rem',
+                flexWrap: 'wrap',
               }}
             >
-              <p
-                style={{
-                  fontSize: '0.8125rem',
-                  fontWeight: 500,
-                  color: 'var(--vula-muted)',
-                }}
-              >
-                {opp.funder}
-              </p>
-              <span
-                style={{
-                  flexShrink: 0,
-                  fontSize: '0.6875rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.04em',
-                  padding: '0.25rem 0.625rem',
-                  borderRadius: '999px',
-                  background: status.bg,
-                  color: status.color,
-                }}
-              >
-                {status.label}
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <p
+                  style={{
+                    fontSize: '0.8125rem',
+                    fontWeight: 500,
+                    color: 'var(--vula-muted)',
+                  }}
+                >
+                  {opp.funder}
+                </p>
+                <span
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    padding: '0.2rem 0.6rem',
+                    borderRadius: '999px',
+                    background: status.bg,
+                    color: status.color,
+                  }}
+                >
+                  {status.label}
+                </span>
+              </div>
+              {/* Deadline chip */}
+              {deadlineLabel && (
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.3rem',
+                    fontSize: '0.6875rem',
+                    fontWeight: 650,
+                    letterSpacing: '0.02em',
+                    padding: '0.2rem 0.625rem',
+                    borderRadius: '999px',
+                    background: deadlineBg,
+                    color: deadlineColor,
+                    border: `1px solid ${deadlineBorder}`,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                    <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                  {deadlineLabel}
+                </span>
+              )}
             </div>
+
+            {/* Title */}
             <h1
               style={{
                 fontSize: 'clamp(1.25rem, 3vw, 1.625rem)',
@@ -143,10 +205,90 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                 letterSpacing: '-0.02em',
                 color: 'var(--vula-ink)',
                 lineHeight: 1.2,
+                marginBottom: '1.25rem',
               }}
             >
               {opp.title}
             </h1>
+
+            {/* Early CTA in header band */}
+            {!isClosed && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {hasApplyUrl ? (
+                  <>
+                    <a
+                      href={opp.apply_url!}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        background: 'var(--vula-green)',
+                        color: '#fff',
+                        fontWeight: 650,
+                        fontSize: '0.9375rem',
+                        padding: '0.875rem 1.5rem',
+                        borderRadius: 'var(--radius-lg)',
+                        textDecoration: 'none',
+                        boxShadow: '0 1px 2px oklch(0.2 0.08 145 / 0.18), inset 0 1px 0 oklch(1 0 0 / 0.12)',
+                      }}
+                    >
+                      Apply on official site
+                      <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                        <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                    {showSourceLink && (
+                      <a
+                        href={opp.source_url!}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '0.5rem',
+                          background: 'var(--vula-surface)',
+                          border: '1px solid var(--vula-border)',
+                          color: 'var(--vula-muted)',
+                          fontWeight: 500,
+                          fontSize: '0.875rem',
+                          padding: '0.75rem 1.5rem',
+                          borderRadius: 'var(--radius-lg)',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        View official source
+                        <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+                          <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  /* No-portal CTA */
+                  <NoPortalBlock sourceUrl={opp.source_url} />
+                )}
+                {/* Expectation-setting note */}
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--vula-faint)',
+                    textAlign: 'center',
+                    marginTop: '0.25rem',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {opp.status === 'ongoing'
+                    ? 'This programme accepts applications on a rolling basis. No fixed closing date.'
+                    : deadlineUrgent && deadlineLabel
+                    ? `Deadline is soon. Prepare your documents now and apply directly on the official site.`
+                    : 'Always verify eligibility and deadlines on the official source before applying.'}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Body */}
@@ -237,9 +379,17 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
               </div>
             )}
 
-            {/* Documents */}
+            {/* Documents: reframed as readiness checklist */}
             {opp.documents_required?.length > 0 && (
-              <div style={{ marginBottom: '1.5rem' }}>
+              <div
+                style={{
+                  marginBottom: '1.5rem',
+                  background: 'var(--vula-bg)',
+                  border: '1px solid var(--vula-border)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1rem 1.125rem',
+                }}
+              >
                 <h2
                   style={{
                     fontSize: '0.6875rem',
@@ -247,11 +397,21 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                     letterSpacing: '0.07em',
                     textTransform: 'uppercase',
                     color: 'var(--vula-faint)',
-                    marginBottom: '0.75rem',
+                    marginBottom: '0.25rem',
                   }}
                 >
-                  Documents needed
+                  What to prepare
                 </h2>
+                <p
+                  style={{
+                    fontSize: '0.8125rem',
+                    color: 'var(--vula-muted)',
+                    lineHeight: 1.5,
+                    marginBottom: '0.875rem',
+                  }}
+                >
+                  Have these ready before you apply.
+                </p>
                 <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {opp.documents_required.map((doc: string) => (
                     <li
@@ -290,10 +450,13 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
               </div>
             )}
 
-            {/* CTAs */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-              {hasApplyUrl ? (
-                <>
+            {/* Closed end-state */}
+            {isClosed ? (
+              <ClosedState sourceUrl={opp.source_url} />
+            ) : (
+              /* Secondary body CTA (repeat for long-scroll pages) */
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+                {hasApplyUrl ? (
                   <a
                     href={opp.apply_url!}
                     target="_blank"
@@ -318,134 +481,200 @@ export default async function FundPage({ params }: { params: Promise<{ slug: str
                       <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </a>
-                  {showSourceLink && (
-                    <a
-                      href={opp.source_url!}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        background: 'var(--vula-surface)',
-                        border: '1px solid var(--vula-border)',
-                        color: 'var(--vula-muted)',
-                        fontWeight: 500,
-                        fontSize: '0.875rem',
-                        padding: '0.75rem 1.5rem',
-                        borderRadius: 'var(--radius-lg)',
-                        textDecoration: 'none',
-                      }}
-                    >
-                      View official source
-                      <svg width="13" height="13" fill="none" viewBox="0 0 12 12" aria-hidden="true">
-                        <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
-                  )}
-                </>
-              ) : (
-                <div
-                  style={{
-                    background: 'var(--vula-bg)',
-                    border: '1px solid var(--vula-border)',
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '1.25rem 1.375rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.875rem',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                    <div
-                      style={{
-                        flexShrink: 0,
-                        width: '2rem',
-                        height: '2rem',
-                        borderRadius: 'var(--radius)',
-                        background: 'var(--vula-green-subtle)',
-                        border: '1px solid var(--vula-green-light)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--vula-green)',
-                      }}
-                    >
-                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p
-                        style={{
-                          fontSize: '0.875rem',
-                          fontWeight: 600,
-                          color: 'var(--vula-ink)',
-                          marginBottom: '0.25rem',
-                          lineHeight: 1.3,
-                        }}
-                      >
-                        No online portal
-                      </p>
-                      <p
-                        style={{
-                          fontSize: '0.8125rem',
-                          color: 'var(--vula-muted)',
-                          lineHeight: 1.55,
-                        }}
-                      >
-                        This programme does not have an online application portal. Visit the official source below for contact details, office locations, and how to start your application.
-                      </p>
-                    </div>
-                  </div>
+                ) : (
+                  <NoPortalBlock sourceUrl={opp.source_url} />
+                )}
+              </div>
+            )}
 
-                  {opp.source_url && (
-                    <a
-                      href={opp.source_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.375rem',
-                        fontSize: '0.8125rem',
-                        fontWeight: 600,
-                        color: 'var(--vula-green)',
-                        background: 'var(--vula-green-subtle)',
-                        border: '1px solid var(--vula-green-light)',
-                        padding: '0.5rem 1rem',
-                        borderRadius: 'var(--radius)',
-                        textDecoration: 'none',
-                      }}
-                    >
-                      Visit official source
-                      <svg width="11" height="11" fill="none" viewBox="0 0 12 12" aria-hidden="true">
-                        <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Disclaimer */}
-            <p
-              style={{
-                fontSize: '0.75rem',
-                color: 'var(--vula-faint)',
-                textAlign: 'center',
-                marginTop: '1.25rem',
-                lineHeight: 1.5,
-              }}
-            >
-              Always verify eligibility and deadlines on the official source before applying.
-            </p>
+            {/* Final disclaimer */}
+            {!isClosed && (
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: 'var(--vula-faint)',
+                  textAlign: 'center',
+                  marginTop: '1.25rem',
+                  lineHeight: 1.5,
+                }}
+              >
+                Always verify eligibility and deadlines on the official source before applying.
+              </p>
+            )}
           </div>
         </article>
-
       </section>
     </main>
+  )
+}
+
+// No online portal block
+function NoPortalBlock({ sourceUrl }: { sourceUrl: string | null }) {
+  return (
+    <div
+      style={{
+        background: 'var(--vula-bg)',
+        border: '1px solid var(--vula-border)',
+        borderRadius: 'var(--radius-lg)',
+        padding: '1.25rem 1.375rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.875rem',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+        <div
+          style={{
+            flexShrink: 0,
+            width: '2rem',
+            height: '2rem',
+            borderRadius: 'var(--radius)',
+            background: 'var(--vula-green-subtle)',
+            border: '1px solid var(--vula-green-light)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--vula-green)',
+          }}
+        >
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <div>
+          <p
+            style={{
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--vula-ink)',
+              marginBottom: '0.25rem',
+              lineHeight: 1.3,
+            }}
+          >
+            No online portal
+          </p>
+          <p
+            style={{
+              fontSize: '0.8125rem',
+              color: 'var(--vula-muted)',
+              lineHeight: 1.55,
+            }}
+          >
+            This programme does not accept applications online. Visit the official source for contact details, office locations, and how to start your application.
+          </p>
+        </div>
+      </div>
+      {sourceUrl && (
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+            color: 'var(--vula-green)',
+            background: 'var(--vula-green-subtle)',
+            border: '1px solid var(--vula-green-light)',
+            padding: '0.5rem 1rem',
+            borderRadius: 'var(--radius)',
+            textDecoration: 'none',
+          }}
+        >
+          Visit official source
+          <svg width="11" height="11" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
+      )}
+    </div>
+  )
+}
+
+// Closed opportunity end-state
+function ClosedState({ sourceUrl }: { sourceUrl: string | null }) {
+  return (
+    <div
+      style={{
+        background: 'var(--vula-bg)',
+        border: '1px solid var(--vula-border)',
+        borderRadius: 'var(--radius-lg)',
+        padding: '1.25rem 1.375rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.875rem',
+      }}
+    >
+      <div>
+        <p
+          style={{
+            fontSize: '0.875rem',
+            fontWeight: 600,
+            color: 'var(--vula-ink)',
+            marginBottom: '0.375rem',
+            lineHeight: 1.3,
+          }}
+        >
+          This opportunity is currently closed
+        </p>
+        <p
+          style={{
+            fontSize: '0.8125rem',
+            color: 'var(--vula-muted)',
+            lineHeight: 1.55,
+          }}
+        >
+          Some programmes reopen each year or announce new rounds. Check the official source for updates, or browse the directory for open opportunities now.
+        </p>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+        {sourceUrl && (
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              color: 'var(--vula-muted)',
+              background: 'var(--vula-surface)',
+              border: '1px solid var(--vula-border)',
+              padding: '0.5rem 1rem',
+              borderRadius: 'var(--radius)',
+              textDecoration: 'none',
+            }}
+          >
+            Check official source
+            <svg width="11" height="11" fill="none" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 10L10 2M5 2h5v5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        )}
+        <Link
+          href="/directory"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.375rem',
+            fontSize: '0.8125rem',
+            fontWeight: 600,
+            color: 'var(--vula-green)',
+            background: 'var(--vula-green-subtle)',
+            border: '1px solid var(--vula-green-light)',
+            padding: '0.5rem 1rem',
+            borderRadius: 'var(--radius)',
+            textDecoration: 'none',
+          }}
+        >
+          Browse open opportunities
+        </Link>
+      </div>
+    </div>
   )
 }
 
