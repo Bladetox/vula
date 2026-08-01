@@ -243,6 +243,16 @@ function StagePicker() {
           <p style={{ fontSize: '1rem', color: 'var(--vula-muted)', lineHeight: 1.6 }}>
             Your stage determines which funding is realistic. Pick the option that best describes your business today.
           </p>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--vula-faint)', lineHeight: 1.6, marginTop: '0.75rem' }}>
+            Not sure what kind of funding you need?{' '}
+            <Link
+              href="/learn/funding-vs-investing"
+              style={{ color: 'var(--vula-green)', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+            >
+              Learn the difference between funding and investing
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
