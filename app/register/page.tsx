@@ -64,34 +64,24 @@ export default function RegisterPage() {
         }}
       >
         <div style={{ maxWidth: '40rem', margin: '0 auto' }}>
-          <div
+          <p
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              background: '#fef9ec',
-              border: '1px solid #f0d98b',
-              color: '#92650a',
+              gap: '0.4rem',
               fontSize: '0.75rem',
               fontWeight: 600,
-              letterSpacing: '0.04em',
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              padding: '0.3rem 0.75rem',
-              borderRadius: '999px',
+              color: 'var(--vula-green)',
               marginBottom: '1.25rem',
             }}
           >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: '#d4a017',
-                flexShrink: 0,
-              }}
-            />
+            <svg width="6" height="6" viewBox="0 0 6 6" aria-hidden="true">
+              <circle cx="3" cy="3" r="3" fill="var(--vula-green)" />
+            </svg>
             For informal businesses
-          </div>
+          </p>
 
           <h1
             style={{
