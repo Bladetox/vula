@@ -152,6 +152,49 @@ export default async function HomePage() {
         />
       </div>
 
+      {/* ── Before you start ────────────────────────────────────────── */}
+      <section style={{ maxWidth: '56rem', margin: '0 auto', padding: '0 1.25rem 2.5rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            background: 'var(--vula-surface-2)',
+            border: '1px solid var(--vula-border)',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.25rem 1.5rem',
+          }}
+        >
+          <p
+            style={{
+              fontSize: '0.6875rem',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--vula-faint)',
+            }}
+          >
+            Before you start
+          </p>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--vula-ink)', lineHeight: 1.65, fontWeight: 500 }}>
+            Funding is not free money. It is grants, loans, or sales-based finance with real conditions attached.
+          </p>
+          <Link
+            href="/learn/funding-vs-investing"
+            style={{
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              color: 'var(--vula-green)',
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              width: 'fit-content',
+            }}
+          >
+            Understand the difference between funding and investing
+          </Link>
+        </div>
+      </section>
+
       {/* ── Entry paths ──────────────────────────────────────────────── */}
       <section style={{ maxWidth: '56rem', margin: '0 auto', padding: '0 1.25rem 4rem' }}>
         <p
