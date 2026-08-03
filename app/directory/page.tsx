@@ -349,7 +349,7 @@ function renderPage(
             }}
           >
             <span style={{ flex: 1 }}>
-              {[activeType?.label, activeIndustry?.name].filter(Boolean).join(', ')} &mdash; {opportunities.length} {resultWord}
+              {[activeType?.label, activeIndustry?.name].filter(Boolean).join(', ')}{' '}({opportunities.length} {resultWord})
             </span>
             <Link
               href={clearAllHref}
