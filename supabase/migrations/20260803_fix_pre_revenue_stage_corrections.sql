@@ -25,7 +25,7 @@
 --    Source: https://www.dsbd.gov.za/programme/co-operatives-development-support-programme-cdsp
 --    Evidence: requires bank statements, management accounts, and financial statements;
 --    a brand-new zero-revenue co-op cannot supply these.
-UPDATE opportunities
+UPDATE public.funding_opportunities
 SET
   business_stage = 'early',
   updated_at     = now()
@@ -35,7 +35,7 @@ WHERE id = '6acdf00e-0e0d-4611-b999-748750c8ea01';
 --    Source: https://www.thedtic.gov.za/financial-and-non-financial-support/incentives/stp/
 --    Evidence: preference for "operational manufacturing enterprises";
 --    requires ROI motivation — pre-revenue idea stage cannot demonstrate this.
-UPDATE opportunities
+UPDATE public.funding_opportunities
 SET
   business_stage = 'early',
   updated_at     = now()
@@ -47,7 +47,7 @@ WHERE id = '6bbc9abe-e86d-411c-bad1-c4aaa450d2d9';
 --    require the applicant to have zero revenue overall. A business earning revenue
 --    from other products while developing a new one fully qualifies.
 --    'early' is more accurate than 'pre-revenue'.
-UPDATE opportunities
+UPDATE public.funding_opportunities
 SET
   business_stage = 'early',
   updated_at     = now()
@@ -59,7 +59,7 @@ WHERE id = '39cc30b5-77dc-4219-a72d-a9fdc04d72d6';
 --    targets existing owner-managed shops upgrading their operations (stock,
 --    refrigeration, shelving). In practice applicants are already trading.
 --    'early' is more honest.
-UPDATE opportunities
+UPDATE public.funding_opportunities
 SET
   business_stage = 'early',
   updated_at     = now()
@@ -70,7 +70,7 @@ WHERE id = 'b0e28d59-4633-42ef-a5e5-148ca4b49b02';
 --    Evidence: applicant must have an actual physical product ready to submit
 --    for SABS testing. Idea-only applicants cannot use this grant at all.
 --    No revenue requirement, but not truly idea-stage either → 'early'.
-UPDATE opportunities
+UPDATE public.funding_opportunities
 SET
   business_stage = 'early',
   updated_at     = now()
@@ -80,7 +80,7 @@ WHERE id = 'f30b91b6-228a-4f9b-aaec-5a5f2a290b76';
 --    Source: https://www.idc.co.za/what-we-offer-2/
 --    Evidence: requires viable business case and ability to repay debt.
 --    Not appropriate for pre-revenue stage; corrected ahead of any re-publish.
-UPDATE opportunities
+UPDATE public.funding_opportunities
 SET
   business_stage = 'early',
   updated_at     = now()
@@ -91,7 +91,7 @@ WHERE id = '104b384f-ae1b-4e0d-b498-7c92553c1b48';
 -- Expected: only NYDA Grant and TIA Seed Fund remain as pre-revenue.
 --
 -- SELECT id, title, business_stage, published
--- FROM opportunities
+-- FROM public.funding_opportunities
 -- WHERE business_stage = 'pre-revenue'
 -- ORDER BY title;
 -- =============================================================================
