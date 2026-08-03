@@ -472,12 +472,14 @@ function renderResults(
           <FilterChip href={`/find?stage=${stage}&women=true`} label="Women-owned" active={params.women === 'true'} />
           <FilterChip href={`/find?stage=${stage}&over35=true`} label="35 and older" active={params.over35 === 'true'} />
           <FilterChip href={`/find?stage=${stage}&cooperative=true`} label="Co-operative" active={params.cooperative === 'true'} />
-          <FilterChip
-            href={`/find?stage=${stage}&type=revenue-based`}
-            label="Based on your sales"
-            active={params.type === 'revenue-based'}
-            amber
-          />
+          {stage !== 'pre-revenue' && (
+            <FilterChip
+              href={`/find?stage=${stage}&type=revenue-based`}
+              label="Based on your sales"
+              active={params.type === 'revenue-based'}
+              amber
+            />
+          )}
         </div>
 
         {opportunities.length === 0 ? (
