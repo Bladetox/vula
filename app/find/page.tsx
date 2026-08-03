@@ -14,7 +14,7 @@ const STAGES: {
     value: 'pre-revenue',
     label: 'No revenue yet',
     sub: 'Idea stage or just getting started, no sales yet',
-    note: 'Unregistered and informal businesses are not excluded. Several programmes are designed for this stage.',
+    note: 'All programmes at this stage require a registered business. If you are not yet registered, CIPC registration is free and takes 1–3 days.',
     icon: (
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
@@ -61,7 +61,7 @@ const STAGES: {
 const STAGE_RESULTS_COPY: Record<string, { headline: string; intro: string; filterIntro: string }> = {
   'pre-revenue': {
     headline: 'Funding available at your stage',
-    intro: 'These opportunities are open to businesses that are not yet trading or have not yet registered. Read each listing carefully and check what documents are required before applying.',
+    intro: 'These opportunities are open to registered businesses that are not yet earning revenue. All require CIPC registration — if you haven\'t registered yet, that\'s your first step.',
     filterIntro: 'Narrow by who you are or how the funding works.',
   },
   early: {
