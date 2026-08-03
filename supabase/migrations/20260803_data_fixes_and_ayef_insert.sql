@@ -11,13 +11,13 @@
 -- ---------------------------------------------------------------------------
 
 -- Duplicate TREP row with wrong business_stage='growth' (idx29)
-DELETE FROM opportunities WHERE id = 'aaab7d38-1553-435a-b86d-16f1f9ae0890';
+DELETE FROM funding_opportunities WHERE id = 'aaab7d38-1553-435a-b86d-16f1f9ae0890';
 
 -- Duplicate TREP row with business_stage='pre-revenue', show_nextslot_card=false (idx32)
-DELETE FROM opportunities WHERE id = 'b5884efb-717d-4b34-abb7-2a38668b4499';
+DELETE FROM funding_opportunities WHERE id = 'b5884efb-717d-4b34-abb7-2a38668b4499';
 
 -- Duplicate Asset Assist row missing amount_min, max_turnover, and target flags (idx33)
-DELETE FROM opportunities WHERE id = 'b5d8949e-2745-4391-8b71-db2b45c6dd38';
+DELETE FROM funding_opportunities WHERE id = 'b5d8949e-2745-4391-8b71-db2b45c6dd38';
 
 
 -- ---------------------------------------------------------------------------
@@ -28,7 +28,7 @@ DELETE FROM opportunities WHERE id = 'b5d8949e-2745-4391-8b71-db2b45c6dd38';
 --    It is a township/rural programme, not an informal-trader programme.
 -- ---------------------------------------------------------------------------
 
-UPDATE opportunities
+UPDATE funding_opportunities
 SET
   target_informal   = false,
   business_stage    = 'any',          -- supports all stages, not just pre-revenue
@@ -47,7 +47,7 @@ WHERE id = '3db0b35d-6af2-45be-9f06-878cb5ed484d';  -- canonical TREP row (idx15
 --    Eligibility note updated to reflect the pending-registration policy.
 -- ---------------------------------------------------------------------------
 
-UPDATE opportunities
+UPDATE funding_opportunities
 SET
   requires_registration = false,
   eligibility_notes     = 'Applicants must be South African citizens and residents aged 18 to 35, and must apply before turning 35. Applicants must have skills, experience, or potential appropriate to the business. Businesses with annual turnover above R750,000 are excluded, except cooperatives which may have turnover up to R1,000,000. The voucher tier (R1,000–R10,000) accepts applicants with pending CIPC registration — a formal company registration is not required at the time of application. Full grant tiers require CIPC registration by the time of disbursement. NYDA will not fund illegal activities, pyramid schemes, primary tobacco or alcohol businesses, loan substitution, vehicles, patent registration, most R&D seed funding, or applicants previously disqualified under NYDA rules. Cumulative lifetime grant support is capped at R200,000, except agriculture and technology-related cooperatives which may receive up to R250,000.',
@@ -64,7 +64,7 @@ WHERE id = '1ac990c7-4ebf-4dd4-b8de-49f8b0f378d6';  -- NYDA Grant Programme (idx
 --    at the filter level defeats the purpose of the programme.
 -- ---------------------------------------------------------------------------
 
-UPDATE opportunities
+UPDATE funding_opportunities
 SET
   requires_registration = false,
   updated_at            = now()
@@ -78,7 +78,7 @@ WHERE id = 'b0e28d59-4633-42ef-a5e5-148ca4b49b02';  -- Spaza Shop Support Fund (
 --    No CIPC certificate is listed or required. Sole traders qualify.
 -- ---------------------------------------------------------------------------
 
-UPDATE opportunities
+UPDATE funding_opportunities
 SET
   requires_registration = false,
   updated_at            = now()
@@ -93,7 +93,7 @@ WHERE id = '47447deb-d748-446b-8ec0-94f7f78347e4';  -- Yoco Capital (idx16)
 --    monthly turnover only.
 -- ---------------------------------------------------------------------------
 
-UPDATE opportunities
+UPDATE funding_opportunities
 SET
   requires_registration = false,
   updated_at            = now()
@@ -110,7 +110,7 @@ WHERE id = '622d33ec-1355-41a5-b436-ad9fc7f78724';  -- Retail Capital Working Ca
 --            https://www.bizcommunity.com/article/absa-unveils-entrepreneurship-fund-for-young-south-africans-842773a
 -- ---------------------------------------------------------------------------
 
-INSERT INTO opportunities (
+INSERT INTO funding_opportunities (
   id,
   title,
   funder,
@@ -153,12 +153,12 @@ INSERT INTO opportunities (
   'Amount determined per milestone phase',
   'grant',
   'open',
-  false,   -- No CIPC registration required at application stage; idea-stage and informal traders explicitly accepted
-  true,    -- Explicitly targets youth 18–35
+  false,
+  true,
   false,
   false,
   false,
-  true,    -- Accepts informal traders and idea-stage entrepreneurs
+  true,
   false,
   false,
   null,
@@ -171,8 +171,8 @@ INSERT INTO opportunities (
   true,
   now(),
   now(),
-  false,   -- Explicitly age-capped at 35; over-35 entrepreneurs do not qualify
-  true,    -- Feature on next-slot card — highest-value new listing for pre-revenue users
+  false,
+  true,
   null,
   'pre-revenue',
   true
@@ -185,17 +185,17 @@ INSERT INTO opportunities (
 
 -- Check all pre-revenue opportunities and their registration requirement:
 -- SELECT id, title, requires_registration, target_informal, business_stage
--- FROM opportunities
+-- FROM funding_opportunities
 -- WHERE business_stage IN ('pre-revenue', 'any')
 -- AND published = true
 -- ORDER BY requires_registration, title;
 
 -- Confirm no duplicate TREP rows remain:
 -- SELECT id, title, business_stage, updated_at
--- FROM opportunities
+-- FROM funding_opportunities
 -- WHERE title ILIKE '%TREP%' OR title ILIKE '%Township and Rural%';
 
 -- Confirm AYEF was inserted correctly:
 -- SELECT id, title, requires_registration, target_youth, target_informal, business_stage, show_nextslot_card
--- FROM opportunities
+-- FROM funding_opportunities
 -- WHERE title ILIKE '%AYEF%' OR title ILIKE '%Absa Youth Entrepreneurship%';
