@@ -14,7 +14,7 @@ const STAGES: {
     value: 'pre-revenue',
     label: 'No revenue yet',
     sub: 'Idea stage or just getting started, no sales yet',
-    note: 'All programmes at this stage require a registered business. If you are not yet registered, CIPC registration is free and takes 1–3 days.',
+    note: 'Register online via CIPC BizPortal or get assistance from FNB. Have your ID/passport, director and company details, business address and optional name ready. It costs R125 without a name or R175 with name reservation and typically takes 1–3 business days.',
     icon: (
       <svg width="24" height="24" fill="none" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
