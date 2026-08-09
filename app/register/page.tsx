@@ -7,7 +7,8 @@ const STEPS = [
     description:
       'The Companies and Intellectual Property Commission registers your business officially. You can register a private company (Pty Ltd), sole proprietor, or co-operative.',
     action: 'Register on cipc.co.za',
-    href: 'https://www.cipc.co.za/index.php/companies-and-intellectual-property/register-your-company/',
+   href: 'https://eservices.cipc.co.za/',
+
   },
   {
     number: 2,
