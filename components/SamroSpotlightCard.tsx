@@ -1,85 +1,134 @@
-'use client';
+import Link from 'next/link'
 
-import Link from 'next/link';
+const SAMRO_ID = '810194ed-21d2-4b05-8580-1145538c1b63'
+const SAMRO_DEADLINE = new Date('2026-09-30T17:00:00+02:00')
 
-export default function SamroSpotlightCard() {
-  const deadline = new Date('2026-09-30');
-  const now = new Date();
+export function SamroSpotlightCard() {
+  const now = new Date()
   const daysLeft = Math.max(
     0,
-    Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-  );
+    Math.ceil((SAMRO_DEADLINE.getTime() - now.getTime()) / 86400000)
+  )
 
   return (
-    <section className="w-full">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
-          <div className="grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-8 sm:p-8">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs font-medium text-neutral-700">
-                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
-                Spotlight: Creative & Media
-              </div>
+    <section style={{ maxWidth: '56rem', margin: '0 auto', padding: '0 1.25rem 2.5rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.75rem',
+          background: 'var(--vula-surface-2)',
+          border: '1px solid var(--vula-green-light)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '1.5rem',
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: '0.75rem',
+          }}
+        >
+          <p
+            style={{
+              fontSize: '0.6875rem',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--vula-green)',
+            }}
+          >
+            Closing this month
+          </p>
+          <span
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: 'var(--vula-green)',
+              background: 'var(--vula-green-subtle)',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '999px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Up to R25,000
+          </span>
+        </div>
 
-              <h2 className="mt-4 text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl">
-                SAMRO Music Creation Support Fund
-              </h2>
+        <div>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              color: 'var(--vula-faint)',
+              marginBottom: '0.2rem',
+            }}
+          >
+            SAMRO
+          </p>
+          <p
+            style={{
+              fontWeight: 600,
+              color: 'var(--vula-ink)',
+              fontSize: '1.0625rem',
+              lineHeight: 1.35,
+            }}
+          >
+            Music Creation Support Fund
+          </p>
+        </div>
 
-              <p className="mt-3 max-w-2xl text-base leading-relaxed text-neutral-600">
-                Grants of up to R25,000 for SAMRO Full and Associate Members to create new,
-                royalty-generating musical works including albums, singles, compositions, music
-                videos and scores. 120 grants available in this cycle.
-              </p>
+        <p style={{ fontSize: '0.875rem', color: 'var(--vula-muted)', lineHeight: 1.6 }}>
+          120 grants for SAMRO Full and Associate Members to create new, royalty-generating
+          musical works. Members who received SAMRO CSI support in the past 3 years are not
+          eligible.
+        </p>
 
-              <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-neutral-600">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-neutral-900">Deadline:</span>
-                  <span>30 September 2026</span>
-                </div>
-                <div className="hidden h-4 w-px bg-neutral-300 sm:block" />
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-neutral-900">Days left:</span>
-                  <span className="font-medium text-neutral-900">{daysLeft}</span>
-                </div>
-              </div>
+        <p style={{ fontSize: '0.8125rem', color: 'var(--vula-ink)', fontWeight: 500 }}>
+          Closes 30 September 2026 at 5pm &middot; {daysLeft} {daysLeft === 1 ? 'day' : 'days'} left
+        </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="https://www.samro.org.za/news/samro-opens-applications-for-the-music-creation-support-fund"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2"
-                >
-                  Apply on SAMRO
-                </Link>
-                <Link
-                  href="/browse?industry=creative-media"
-                  className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-800 transition hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:ring-offset-2"
-                >
-                  Browse Creative & Media
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-5 sm:w-56">
-              <div className="text-center">
-                <div className="text-xs uppercase tracking-wide text-neutral-500">Funding</div>
-                <div className="text-lg font-bold text-neutral-900">Up to R25,000</div>
-              </div>
-              <div className="h-px w-full bg-neutral-200" />
-              <div className="text-center">
-                <div className="text-xs uppercase tracking-wide text-neutral-500">Grants</div>
-                <div className="text-lg font-bold text-neutral-900">120</div>
-              </div>
-              <div className="h-px w-full bg-neutral-200" />
-              <div className="text-center">
-                <div className="text-xs uppercase tracking-wide text-neutral-500">For</div>
-                <div className="text-sm font-semibold text-neutral-900">SAMRO Members</div>
-              </div>
-            </div>
-          </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem', marginTop: '0.25rem' }}>
+          <Link
+            href="https://www.samro.org.za/news/samro-opens-applications-for-the-music-creation-support-fund"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0.625rem 1.125rem',
+              background: 'var(--vula-green)',
+              color: '#fff',
+              fontWeight: 600,
+              fontSize: '0.875rem',
+              borderRadius: 'var(--radius-lg)',
+              textDecoration: 'none',
+            }}
+          >
+            Apply on SAMRO
+          </Link>
+          <Link
+            href={`/fund/${SAMRO_ID}`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0.625rem 1.125rem',
+              border: '1px solid var(--vula-border-em)',
+              color: 'var(--vula-ink)',
+              fontWeight: 500,
+              fontSize: '0.875rem',
+              borderRadius: 'var(--radius-lg)',
+              textDecoration: 'none',
+              background: 'var(--vula-surface-2)',
+            }}
+          >
+            Full details
+          </Link>
         </div>
       </div>
     </section>
-  );
+  )
 }

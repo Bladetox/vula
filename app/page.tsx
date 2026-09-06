@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import type { FundingOpportunity } from '@/lib/types'
 import { VulaMark } from '@/components/VulaMark'
+import { SamroSpotlightCard } from '@/components/SamroSpotlightCard'
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -140,6 +141,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── SAMRO spotlight ──────────────────────────────────────────── */}
+      <SamroSpotlightCard />
 
       {/* Divider */}
       <div style={{ maxWidth: '56rem', margin: '0 auto', padding: '0 1.25rem' }}>
